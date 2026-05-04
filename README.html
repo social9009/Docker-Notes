@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐳 Docker Mastery — by Akshay Sawant</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050c18;
+  --surface: #0b1628;
+  --surface2: #0f1e35;
+  --border: #1a3050;
+  --cyan: #00e5ff;
+  --teal: #00bcd4;
+  --orange: #ff6b35;
+  --yellow: #ffd166;
+  --green: #06d6a0;
+  --pink: #ff6b9d;
+  --purple: #9b59b6;
+  --red: #ef4444;
+  --text: #e2eaff;
+  --muted: #7a93b8;
+  --glow: 0 0 30px rgba(0,229,255,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* ── BACKGROUND STARS ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(0,229,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,107,53,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 10%, rgba(6,214,160,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 60%, rgba(0,229,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 35%, rgba(255,209,102,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 50%, rgba(255,107,157,0.2) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(5,12,24,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--cyan);
+  white-space: nowrap;
+  margin-right: 12px;
+}
+.nav-inner a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.nav-inner a:hover {
+  color: var(--cyan);
+  border-color: var(--border);
+  background: rgba(0,229,255,0.05);
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,229,255,0.08);
+  border: 1px solid rgba(0,229,255,0.25);
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--cyan);
+  margin-bottom: 30px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,229,255,0.2); }
+  50% { box-shadow: 0 0 0 10px rgba(0,229,255,0); }
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.hero h1 span.grad {
+  background: linear-gradient(135deg, var(--cyan), var(--orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto 36px;
+  font-style: italic;
+}
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 50px;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  padding: 5px 14px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.badge-cyan { color: var(--cyan); border-color: var(--cyan); background: rgba(0,229,255,0.07); }
+.badge-orange { color: var(--orange); border-color: var(--orange); background: rgba(255,107,53,0.07); }
+.badge-green { color: var(--green); border-color: var(--green); background: rgba(6,214,160,0.07); }
+.badge-yellow { color: var(--yellow); border-color: var(--yellow); background: rgba(255,209,102,0.07); }
+.badge-pink { color: var(--pink); border-color: var(--pink); background: rgba(255,107,157,0.07); }
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 70px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--orange);
+  background: rgba(255,107,53,0.1);
+  border: 1px solid rgba(255,107,53,0.3);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.section-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--text);
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: rgba(0,229,255,0.3);
+  box-shadow: var(--glow);
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.card h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── CODE BLOCKS ── */
+pre, .code-block {
+  background: #020810;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--cyan);
+  border-radius: 8px;
+  padding: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  overflow-x: auto;
+  margin: 16px 0;
+  line-height: 1.65;
+}
+.kw { color: var(--cyan); font-weight: 700; }
+.cm { color: #4a6080; font-style: italic; }
+.str { color: var(--green); }
+.num { color: var(--orange); }
+.tag { color: var(--pink); }
+
+/* ── TABLES ── */
+.tbl-wrap { overflow-x: auto; margin: 16px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+th {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--surface2);
+  color: var(--muted);
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(26,48,80,0.5);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(0,229,255,0.03); }
+.yes { color: var(--green); font-weight: 600; }
+.no { color: var(--red); }
+.warn { color: var(--yellow); }
+
+/* ── FLOW DIAGRAMS ── */
+.flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 20px 0;
+  justify-content: center;
+}
+.flow-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  text-align: center;
+  min-width: 110px;
+  transition: all 0.2s;
+}
+.flow-box:hover {
+  border-color: var(--cyan);
+  background: rgba(0,229,255,0.07);
+  transform: translateY(-2px);
+}
+.flow-box.cyan { border-color: var(--cyan); color: var(--cyan); }
+.flow-box.orange { border-color: var(--orange); color: var(--orange); }
+.flow-box.green { border-color: var(--green); color: var(--green); }
+.flow-box.yellow { border-color: var(--yellow); color: var(--yellow); }
+.flow-box.pink { border-color: var(--pink); color: var(--pink); }
+.flow-arrow {
+  color: var(--muted);
+  font-size: 1.2rem;
+  padding: 0 8px;
+  user-select: none;
+}
+
+/* ── CALLOUTS ── */
+.callout {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+}
+.callout-info { background: rgba(0,229,255,0.07); border-left: 3px solid var(--cyan); }
+.callout-warn { background: rgba(255,209,102,0.07); border-left: 3px solid var(--yellow); }
+.callout-success { background: rgba(6,214,160,0.07); border-left: 3px solid var(--green); }
+.callout-fire { background: rgba(255,107,53,0.07); border-left: 3px solid var(--orange); }
+.callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+.callout strong { font-family: 'Syne', sans-serif; font-weight: 700; }
+
+/* ── ARCHITECTURE DIAGRAM ── */
+.arch-diagram {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+  margin: 24px 0;
+}
+.arch-block {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.arch-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+.arch-layer {
+  background: rgba(0,229,255,0.08);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 4px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--cyan);
+}
+.arch-layer.orange-l {
+  background: rgba(255,107,53,0.08);
+  border-color: rgba(255,107,53,0.2);
+  color: var(--orange);
+}
+.arch-layer.green-l {
+  background: rgba(6,214,160,0.08);
+  border-color: rgba(6,214,160,0.2);
+  color: var(--green);
+}
+.arch-vs {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--yellow);
+  text-align: center;
+}
+
+/* ── INSTRUCTION GRID ── */
+.instr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.instr-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  cursor: default;
+  transition: all 0.2s;
+}
+.instr-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.instr-kw {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.instr-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.instr-creates { border-top: 2px solid var(--orange); }
+.instr-nocare { border-top: 2px solid var(--muted); }
+.layer-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-top: 6px;
+  display: inline-block;
+}
+.layer-yes { background: rgba(255,107,53,0.15); color: var(--orange); }
+.layer-no { background: rgba(122,147,184,0.15); color: var(--muted); }
+
+/* ── VOLUME TREE ── */
+.tree {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 2;
+  background: #020810;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.t-dir { color: var(--cyan); }
+.t-file { color: var(--muted); }
+.t-note { color: var(--orange); }
+
+/* ── IMAGE SIZE BAR ── */
+.size-bars { margin: 20px 0; }
+.size-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 80px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.size-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text);
+}
+.size-bar-wrap {
+  background: rgba(26,48,80,0.5);
+  border-radius: 4px;
+  height: 20px;
+  overflow: hidden;
+}
+.size-bar {
+  height: 100%;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: width 1s ease-out;
+}
+.size-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* ── NETWORK DIAGRAM ── */
+.net-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 24px 0;
+}
+.net-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.net-node {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  text-align: center;
+  min-width: 90px;
+}
+.net-line {
+  width: 2px;
+  height: 28px;
+  background: var(--border);
+  margin: 0 auto;
+}
+.net-hline {
+  width: 28px;
+  height: 2px;
+  background: var(--border);
+}
+.net-bus {
+  background: rgba(0,229,255,0.06);
+  border: 1px solid rgba(0,229,255,0.25);
+  border-radius: 8px;
+  padding: 10px 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--cyan);
+  letter-spacing: 0.05em;
+}
+
+/* ── MULTISTAGE DIAGRAM ── */
+.stages {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: stretch;
+  margin: 20px 0;
+}
+.stage-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.stage-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.stage-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.77rem;
+  color: var(--muted);
+  padding: 5px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.stage-item::before { content: '▸'; color: var(--cyan); flex-shrink: 0; }
+.stage-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--orange);
+  font-size: 1.5rem;
+}
+.stage-arrow span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.stage1 { border-top: 2px solid var(--orange); }
+.stage2 { border-top: 2px solid var(--green); }
+
+/* ── REAL EXAMPLE BLOCK ── */
+.example-block {
+  background: linear-gradient(135deg, rgba(0,229,255,0.04), rgba(255,107,53,0.04));
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 20px 0;
+  position: relative;
+}
+.example-block::before {
+  content: '🔥 REAL-TIME EXAMPLE';
+  position: absolute;
+  top: -11px;
+  left: 20px;
+  background: var(--bg);
+  padding: 0 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+}
+
+/* ── COMMANDS LIST ── */
+.cmd-list { list-style: none; margin: 12px 0; }
+.cmd-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(26,48,80,0.4);
+  font-size: 0.9rem;
+}
+.cmd-list li:last-child { border-bottom: none; }
+.cmd-list code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  background: rgba(0,229,255,0.08);
+  color: var(--cyan);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ── STEPS ── */
+.steps { counter-reset: step; list-style: none; margin: 20px 0; }
+.steps li {
+  counter-increment: step;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(26,48,80,0.4);
+}
+.steps li:last-child { border-bottom: none; }
+.steps li::before {
+  content: counter(step);
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,229,255,0.1);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.steps li p { font-size: 0.92rem; color: var(--text); }
+.steps li code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  background: rgba(0,229,255,0.08);
+  color: var(--cyan);
+  padding: 1px 7px;
+  border-radius: 3px;
+}
+
+/* ── PROJECTS ── */
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--orange));
+}
+.project-card:hover {
+  border-color: rgba(0,229,255,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.project-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+.project-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+  padding: 40px 24px;
+  text-align: center;
+}
+.footer-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.footer-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--cyan), var(--orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.footer-role {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 40px 0;
+}
+
+/* ── TOOLTIPS VIA TITLE ── */
+abbr { cursor: help; text-decoration: dotted underline; }
+
+/* ── INLINE CODE ── */
+p code, li code, td code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: rgba(0,229,255,0.08);
+  color: var(--cyan);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* ── FADE IN ANIMATION ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section {
+  animation: fadeIn 0.5s ease both;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">🐳 Docker Mastery</span>
+    <a href="#containers">Containers</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#dockerfile">Dockerfile</a>
+    <a href="#instructions">Instructions</a>
+    <a href="#volumes">Volumes</a>
+    <a href="#images">Images</a>
+    <a href="#multistage">Multi-Stage</a>
+    <a href="#compose">Compose</a>
+    <a href="#networking">Networking</a>
+    <a href="#ignore">dockerignore</a>
+    <a href="#registry">Registry</a>
+    <a href="#projects">Projects</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ HERO ══ -->
+<div class="hero">
+  <div class="hero-badge">
+    <span>🐳</span> AWS DevOps Learning Series
+  </div>
+  <h1>
+    Docker <span class="grad">Mastery</span><br>Complete Reference
+  </h1>
+  <p class="hero-sub">
+    Scenario-driven Docker notes with real-time examples, architecture diagrams, and hands-on projects
+  </p>
+  <div class="hero-meta">
+    <span class="badge badge-cyan">Containers</span>
+    <span class="badge badge-orange">Dockerfile</span>
+    <span class="badge badge-green">Volumes</span>
+    <span class="badge badge-yellow">Multi-Stage Builds</span>
+    <span class="badge badge-pink">Networking</span>
+    <span class="badge badge-cyan">AWS DevOps</span>
+    <span class="badge badge-orange">By Akshay Sawant · Pune</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN ══ -->
+<div class="container">
+
+<!-- ──────────────────────────────────── §1 CONTAINERS ── -->
+<section class="section" id="containers">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Containers & Containerization</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3><span>📦</span> What is a Container?</h3>
+      <p>A <strong>lightweight, standalone, executable package</strong> of software that includes everything needed to run a piece of software — code, runtime, system tools, libraries, and settings.</p>
+      <div class="callout callout-info" style="margin-top:14px;">
+        <span class="callout-icon">💡</span>
+        <div>Containers are <strong>isolated</strong> from each other and from the host system, ensuring consistent runs across different environments.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3><span>🔧</span> What is Containerization?</h3>
+      <p>The packaging of software code with all its necessary components — libraries, frameworks, dependencies — so they are isolated in their own <strong>"container"</strong>.</p>
+      <div class="callout callout-success" style="margin-top:14px;">
+        <span class="callout-icon">✅</span>
+        <div>Apps run quickly and reliably from one environment to another <strong>without reinstalling dependencies</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-block">
+    <p><strong>🏗️ Real-Time Scenario:</strong> You built a Java app on your laptop. Without Docker it works locally but fails in production because the server has a different Java version. With Docker — you package the exact Java version + your app in a container. <strong>Same container runs everywhere. ✅</strong></p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:24px 0 12px;">🔄 Container Lifecycle Flow</h3>
+  <div class="flow">
+    <div class="flow-box cyan">Dockerfile</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box orange">Docker Image<br><span style="font-size:0.65rem;opacity:0.7">(has OS + packages)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box green">Container<br><span style="font-size:0.65rem;opacity:0.7">(running app)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box yellow">Registry<br><span style="font-size:0.65rem;opacity:0.7">(Docker Hub)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box pink">Deployment</div>
+  </div>
+
+  <div class="callout callout-warn" style="margin-top:18px;">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Key insight:</strong> Containers do NOT have an OS by default. That's why we use <strong>Images</strong> — images contain the OS layer + packages. You pull an image → create a container from it → deploy your app inside.</div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §2 ARCHITECTURE ── -->
+<section class="section" id="architecture">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Docker Architecture</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="card" style="border-top:2px solid var(--cyan);">
+      <h3 style="color:var(--cyan);">🖥️ Docker Client</h3>
+      <p style="font-size:0.88rem;">The CLI tool you use to interact with Docker. Sends commands to the Docker Daemon via REST API.</p>
+      <code style="display:block;margin-top:8px;font-size:0.75rem;color:var(--muted);">docker build / run / ps</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--orange);">
+      <h3 style="color:var(--orange);">⚙️ Docker Host</h3>
+      <p style="font-size:0.88rem;">The machine where Docker is installed. Contains the Daemon, Images, Containers & Networks.</p>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green);">
+      <h3 style="color:var(--green);">🔁 Docker Daemon</h3>
+      <p style="font-size:0.88rem;">Background service that manages all Docker objects — images, containers, volumes, networks.</p>
+    </div>
+    <div class="card" style="border-top:2px solid var(--yellow);">
+      <h3 style="color:var(--yellow);">📚 Docker Registry</h3>
+      <p style="font-size:0.88rem;">Storage for Docker images. Default public registry is <strong>Docker Hub</strong>. Private: AWS ECR, GitHub Container Registry.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 16px;">🐳 Docker vs Virtual Machine</h3>
+  <div class="arch-diagram">
+    <div class="arch-block">
+      <div class="arch-title" style="color:var(--cyan);">🐳 Docker Container</div>
+      <div class="arch-layer">App A</div>
+      <div class="arch-layer">App B</div>
+      <div class="arch-layer">Bins / Libs</div>
+      <div class="arch-layer" style="background:rgba(6,214,160,0.08);border-color:rgba(6,214,160,0.2);color:var(--green);">Docker Engine</div>
+      <div class="arch-layer orange-l">Host OS Kernel (Shared)</div>
+      <div class="arch-layer orange-l">Hardware</div>
+    </div>
+    <div class="arch-vs">VS</div>
+    <div class="arch-block">
+      <div class="arch-title" style="color:var(--orange);">🖥️ Virtual Machine</div>
+      <div class="arch-layer orange-l">App A</div>
+      <div class="arch-layer orange-l">App B</div>
+      <div class="arch-layer orange-l">Guest OS (Full)</div>
+      <div class="arch-layer orange-l">Guest OS (Full)</div>
+      <div class="arch-layer" style="background:rgba(155,89,182,0.08);border-color:rgba(155,89,182,0.2);color:var(--purple);">Hypervisor</div>
+      <div class="arch-layer orange-l">Hardware</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>Docker (Containers)</th><th>Virtual Machines</th></tr>
+      <tr><td>OS</td><td class="yes">Shared Kernel</td><td class="warn">Separate Full OS</td></tr>
+      <tr><td>Startup Time</td><td class="yes">Seconds ⚡</td><td class="warn">Minutes 🐢</td></tr>
+      <tr><td>Size</td><td class="yes">Lightweight (MB)</td><td class="warn">Heavy (GB)</td></tr>
+      <tr><td>Performance</td><td class="yes">High</td><td class="warn">Medium</td></tr>
+      <tr><td>Isolation</td><td class="warn">Process-level</td><td class="yes">Full hardware-level</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §3 DOCKERFILE ── -->
+<section class="section" id="dockerfile">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Understanding Dockerfile</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <p>A Dockerfile is a <strong>blueprint</strong> used to build Docker images automatically. Everything you write inside a Dockerfile becomes a part of the image. It uses <strong>DSL (Domain Specific Language)</strong> keywords (instructions + arguments).</p>
+    <div class="callout callout-info" style="margin-top:14px;">
+      <span class="callout-icon">📌</span>
+      <div>It can: choose base OS/environment · install dependencies · copy application code · configure env variables · expose ports · run startup commands.</div>
+    </div>
+  </div>
+
+  <div class="flow" style="margin: 24px 0;">
+    <div class="flow-box cyan">Write<br>Dockerfile</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box orange">docker build<br><span style="font-size:0.65rem">(creates image)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box green">docker run<br><span style="font-size:0.65rem">(creates container)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box yellow">App is Live<br><span style="font-size:0.65rem">🚀</span></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:24px 0 14px;">🔑 Important Commands Before Dockerfile</h3>
+  <ul class="cmd-list">
+    <li><code>docker attach &lt;ctr&gt;</code> <span>Connects to the <strong>main running process</strong> (PID 1) — use with caution</span></li>
+    <li><code>docker exec -it &lt;ctr&gt; /bin/bash</code> <span>Creates a <strong>new process</strong> — safe way to work inside container ✅</span></li>
+    <li><code>docker ps -a | grep Exited</code> <span>See only <strong>stopped containers</strong></span></li>
+    <li><code>docker top &lt;ctr&gt;</code> <span>Check PIDs of processes <strong>running inside</strong> a container</span></li>
+    <li><code>docker stats &lt;ctr&gt;</code> <span>Shows <strong>CPU % and Memory %</strong> usage of container in real-time</span></li>
+    <li><code>docker commit &lt;img&gt; &lt;ctr&gt;</code> <span>Create image from a <strong>running container</strong> (with all its files/config)</span></li>
+    <li><code>docker image prune</code> <span>Delete all <strong>dangling (unused) images</strong></span></li>
+    <li><code>docker cp /ec2/file.txt ctr:/app/</code> <span>Copy file from <strong>EC2 → Container</strong></span></li>
+  </ul>
+</section>
+
+<!-- ──────────────────────────────────── §4 INSTRUCTIONS ── -->
+<section class="section" id="instructions">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Dockerfile Instructions Deep Dive</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="callout callout-fire">
+    <span class="callout-icon">🔥</span>
+    <div><strong>Layer-Creating Instructions (increase image size):</strong> <code>FROM</code>, <code>RUN</code>, <code>COPY</code>, <code>ADD</code><br>
+    <strong>Non-Layer-Creating:</strong> <code>CMD</code>, <code>ENTRYPOINT</code>, <code>WORKDIR</code>, <code>EXPOSE</code>, <code>ENV</code>, <code>LABEL</code>, <code>USER</code>, <code>VOLUME</code>, <code>ARG</code></div>
+  </div>
+
+  <!-- FROM -->
+  <div class="card" style="border-left:3px solid var(--cyan);margin-top:24px;">
+    <h3 style="color:var(--cyan);">FROM — Foundation Layer</h3>
+    <p>The <strong>first and mandatory instruction</strong>. Tells Docker which base image to start from. Every Dockerfile begins with FROM.</p>
+    <pre><span class="kw">FROM</span> ubuntu:22.04          <span class="cm"># Linux base</span>
+<span class="kw">FROM</span> python:3.11          <span class="cm"># Python runtime</span>
+<span class="kw">FROM</span> node:18-alpine       <span class="cm"># Node.js minimal</span>
+<span class="kw">FROM</span> openjdk:17           <span class="cm"># Java runtime</span>
+<span class="kw">FROM</span> alpine:3.19          <span class="cm"># Ultra-minimal (~5MB)</span></pre>
+    <div class="callout callout-success">
+      <span class="callout-icon">⭐</span>
+      <div><strong>Multi-Stage Power:</strong> You can use <em>multiple FROM statements</em> — Stage 1 builds, Stage 2 runs. This removes build tools from the final image, dramatically reducing size.</div>
+    </div>
+  </div>
+
+  <!-- RUN -->
+  <div class="card" style="border-left:3px solid var(--orange);margin-top:16px;">
+    <h3 style="color:var(--orange);">RUN — Execute Commands at Build Time</h3>
+    <p>Executes commands <strong>during image build</strong>. Each RUN creates a new image layer. Used for installing packages, building apps, creating directories.</p>
+    <pre><span class="cm"># ❌ Bad — multiple layers</span>
+<span class="kw">RUN</span> apt-get update
+<span class="kw">RUN</span> apt-get install -y nginx
+
+<span class="cm"># ✅ Good — single layer (best practice)</span>
+<span class="kw">RUN</span> apt-get update &amp;&amp; \
+    apt-get install -y nginx curl git &amp;&amp; \
+    apt-get clean &amp;&amp; \
+    rm -rf /var/lib/apt/lists/*</pre>
+    <div class="card-grid" style="margin-top:12px;">
+      <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:8px;padding:12px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--cyan);margin-bottom:6px;">Shell Form</div>
+        <code>RUN apt-get install -y nginx</code><br>
+        <span style="font-size:0.8rem;color:var(--muted);">Runs via <code>/bin/sh -c</code></span>
+      </div>
+      <div style="background:rgba(6,214,160,0.05);border:1px solid rgba(6,214,160,0.2);border-radius:8px;padding:12px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--green);margin-bottom:6px;">Exec Form</div>
+        <code>RUN ["apt-get", "install", "-y", "nginx"]</code><br>
+        <span style="font-size:0.8rem;color:var(--muted);">More secure, no shell involved ✅</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CMD -->
+  <div class="card" style="border-left:3px solid var(--green);margin-top:16px;">
+    <h3 style="color:var(--green);">CMD — Default Startup Command</h3>
+    <p>Defines the <strong>default command</strong> that runs when a container starts. Only the <strong>last CMD</strong> in a Dockerfile is processed — writing multiple CMDs is useless. CMD <strong>can be overridden</strong> at runtime.</p>
+    <pre><span class="kw">CMD</span> ["nginx", "-g", "daemon off;"]    <span class="cm"># Web server foreground</span>
+<span class="kw">CMD</span> ["java", "-jar", "/app.jar"]      <span class="cm"># Java app</span>
+<span class="kw">CMD</span> ["npm", "start"]                  <span class="cm"># Node.js</span>
+<span class="kw">CMD</span> ["bash", "-c", "echo 'hello' > /data/hello.txt"]
+<span class="cm"># ↑ Once task completes, container goes to EXITED state 🔥</span></pre>
+  </div>
+
+  <!-- COPY vs ADD -->
+  <div class="card" style="border-left:3px solid var(--yellow);margin-top:16px;">
+    <h3 style="color:var(--yellow);">COPY vs ADD</h3>
+    <p><strong>COPY:</strong> Copies files/dirs from local system (build context) into container image at build time.<br>
+    <strong>ADD:</strong> Like COPY but with superpowers — can auto-extract tar files and download from URLs.</p>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Feature</th><th>COPY</th><th>ADD</th></tr>
+        <tr><td>Simple file copy</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+        <tr><td>Auto extract .tar</td><td class="no">❌</td><td class="yes">✅</td></tr>
+        <tr><td>Download from URL</td><td class="no">❌</td><td class="yes">✅</td></tr>
+        <tr><td>Recommended</td><td class="yes">✅ Prefer this</td><td class="warn">⚠️ Only when needed</td></tr>
+      </table>
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-icon">🎯</span>
+      <div><strong>Best practice for caching:</strong> Copy dependency file first, install deps, then copy rest of code. This prevents reinstalling deps on every code change.</div>
+    </div>
+    <pre><span class="kw">COPY</span> package.json .
+<span class="kw">RUN</span>  npm install         <span class="cm"># cached if package.json unchanged</span>
+<span class="kw">COPY</span> . .                 <span class="cm"># only this re-runs on code changes</span></pre>
+  </div>
+
+  <!-- WORKDIR -->
+  <div class="card" style="border-left:3px solid var(--pink);margin-top:16px;">
+    <h3 style="color:var(--pink);">WORKDIR — Set Working Directory</h3>
+    <p>Sets the <strong>working directory</strong> for all subsequent instructions (RUN, CMD, COPY, ADD, ENTRYPOINT). Creates the directory automatically if it doesn't exist.</p>
+    <pre><span class="kw">WORKDIR</span> /app    <span class="cm"># creates /app if not exists, switches into it</span>
+<span class="kw">COPY</span> . .        <span class="cm"># copies to /app</span>
+<span class="kw">RUN</span> ls          <span class="cm"># runs inside /app</span></pre>
+    <div class="callout callout-info">
+      <span class="callout-icon">💡</span>
+      <div>Without WORKDIR, commands may run in <code>/</code> (root), causing wrong file paths or build failures. <strong>Always define WORKDIR early in Dockerfile.</strong></div>
+    </div>
+  </div>
+
+  <!-- LABEL EXPOSE VOLUME USER ENTRYPOINT ENV ARG in grid -->
+  <div class="instr-grid" style="margin-top:24px;">
+    <div class="instr-card" style="border-top:2px solid var(--muted);">
+      <div class="instr-kw" style="color:var(--cyan);">LABEL</div>
+      <div class="instr-desc">Adds metadata (key=value pairs) to the image. Used for versioning, ownership, CI/CD automation. Replaces deprecated MAINTAINER.</div>
+      <code style="font-size:0.7rem;color:var(--green);">LABEL version="1.0" author="akshay"</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+    <div class="instr-card" style="border-top:2px solid var(--orange);">
+      <div class="instr-kw" style="color:var(--orange);">EXPOSE</div>
+      <div class="instr-desc">Documents which port the container listens on. Does NOT actually publish the port — use <code>-p</code> at runtime for that.</div>
+      <code style="font-size:0.7rem;color:var(--green);">EXPOSE 8080/tcp</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+    <div class="instr-card" style="border-top:2px solid var(--green);">
+      <div class="instr-kw" style="color:var(--green);">VOLUME</div>
+      <div class="instr-desc">Creates a persistent mount point inside the container. Data stored here survives container restarts and deletions.</div>
+      <code style="font-size:0.7rem;color:var(--green);">VOLUME ["/data"]</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+    <div class="instr-card" style="border-top:2px solid var(--pink);">
+      <div class="instr-kw" style="color:var(--pink);">USER</div>
+      <div class="instr-desc">Sets which user runs subsequent instructions. By default Docker runs as <strong>root</strong> — always switch to a non-root user for production security.</div>
+      <code style="font-size:0.7rem;color:var(--green);">USER appuser</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+    <div class="instr-card" style="border-top:2px solid var(--yellow);">
+      <div class="instr-kw" style="color:var(--yellow);">ENTRYPOINT</div>
+      <div class="instr-desc">Defines the <strong>fixed main executable</strong>. Cannot be overridden (unlike CMD). Think: "this container IS this app."</div>
+      <code style="font-size:0.7rem;color:var(--green);">ENTRYPOINT ["java","-jar","app.jar"]</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+    <div class="instr-card" style="border-top:2px solid var(--cyan);">
+      <div class="instr-kw" style="color:var(--cyan);">ENV</div>
+      <div class="instr-desc">Sets environment variables available during <strong>both build and runtime</strong>. Use for app config. Never store secrets here!</div>
+      <code style="font-size:0.7rem;color:var(--green);">ENV NODE_ENV=production PORT=3000</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+    <div class="instr-card" style="border-top:2px solid var(--orange);">
+      <div class="instr-kw" style="color:var(--orange);">ARG</div>
+      <div class="instr-desc">Pass <strong>build-time variables</strong> to Dockerfile. Only available during the image build — NOT accessible in running container (unlike ENV).</div>
+      <code style="font-size:0.7rem;color:var(--green);">ARG BUILD_VER=1.0</code>
+      <div><span class="layer-badge layer-no">no layer</span></div>
+    </div>
+  </div>
+
+  <!-- ENTRYPOINT + CMD combo -->
+  <div class="card" style="margin-top:20px;background:linear-gradient(135deg,rgba(0,229,255,0.04),rgba(255,209,102,0.04));">
+    <h3 style="font-family:'Syne',sans-serif;">⚡ ENTRYPOINT + CMD Together (Interview Gold)</h3>
+    <div class="card-grid" style="margin-top:14px;">
+      <div>
+        <pre style="margin:0;"><span class="kw">ENTRYPOINT</span> ["python"]
+<span class="kw">CMD</span>        ["app.py"]
+<span class="cm"># Docker runs: python app.py</span></pre>
+      </div>
+      <div style="padding:8px 0;">
+        <p style="font-size:0.9rem;"><strong>Rule:</strong> <code>ENTRYPOINT + CMD = FINAL COMMAND</code></p>
+        <ul style="list-style:none;margin-top:10px;font-size:0.88rem;">
+          <li>🔒 ENTRYPOINT → fixed executable (can't override easily)</li>
+          <li>🔓 CMD → default arguments (easily overridden at runtime)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER security -->
+  <div class="example-block" style="margin-top:20px;">
+    <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;">👤 USER — Non-Root Security Pattern</h4>
+    <pre><span class="kw">FROM</span> node:18
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> . .
+<span class="kw">RUN</span> npm install
+<span class="kw">RUN</span> useradd -m nodeuser           <span class="cm"># create non-root user</span>
+<span class="kw">RUN</span> chown -R nodeuser:nodeuser /app <span class="cm"># give ownership</span>
+<span class="kw">USER</span> nodeuser                     <span class="cm"># switch to non-root ✅</span>
+<span class="kw">CMD</span> ["node", "app.js"]</pre>
+    <p style="margin-top:10px;font-size:0.88rem;color:var(--muted);">Why this matters: Prevents privilege escalation in Kubernetes/ECS. Reduces attack surface. Follows <strong>least privilege principle</strong>.</p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §5 VOLUMES ── -->
+<section class="section" id="volumes">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Docker Volumes — Persistent Storage</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="callout callout-fire">
+    <span class="callout-icon">🔥</span>
+    <div><strong>Core Problem:</strong> Containers are ephemeral. Container deleted → data lost. <strong>Volumes solve this</strong> by storing data OUTSIDE the container filesystem.</div>
+  </div>
+
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="card" style="border-top:2px solid var(--cyan);">
+      <h3 style="color:var(--cyan);">📦 Volume</h3>
+      <p>Managed by Docker. Stored at <code>/var/lib/docker/volumes/</code>. <strong>Persistent</strong> across restarts and deletions. Best for production data.</p>
+      <span class="badge badge-green" style="margin-top:8px;display:inline-block;">✅ Production</span>
+    </div>
+    <div class="card" style="border-top:2px solid var(--orange);">
+      <h3 style="color:var(--orange);">🔗 Bind Mount</h3>
+      <p>Maps a specific host directory to a container path. Bidirectional sync. Best for development and testing with local files.</p>
+      <span class="badge badge-yellow" style="margin-top:8px;display:inline-block;">⚡ Dev/Test</span>
+    </div>
+    <div class="card" style="border-top:2px solid var(--muted);">
+      <h3 style="color:var(--muted);">💨 tmpfs</h3>
+      <p>Temporary in-memory storage. Data is lost when container stops. Use for sensitive/temporary data that shouldn't persist.</p>
+      <span class="badge badge-pink" style="margin-top:8px;display:inline-block;">🔐 Sensitive</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 16px;">🔄 Volume Sharing Between Containers</h3>
+  <div class="net-diagram">
+    <div class="net-row">
+      <div class="net-node" style="border-color:var(--cyan);color:var(--cyan);">cont-1</div>
+      <div class="net-hline"></div>
+      <div class="net-node" style="border-color:var(--orange);color:var(--orange);min-width:130px;">📦 volume1<br><span style="font-size:0.65rem;color:var(--muted);">/var/lib/docker/volumes/</span></div>
+      <div class="net-hline"></div>
+      <div class="net-node" style="border-color:var(--green);color:var(--green);">cont-2</div>
+    </div>
+    <div class="net-line"></div>
+    <div class="net-node" style="border-color:var(--yellow);color:var(--yellow);">cont-3<br><span style="font-size:0.65rem;color:var(--muted);">(--volumes-from cont-2)</span></div>
+  </div>
+  <p style="text-align:center;font-size:0.85rem;color:var(--muted);margin-top:8px;">All 3 containers share the same volume — data is <strong>bidirectional and replicated</strong></p>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 16px;">🔧 3 Methods to Create Volumes</h3>
+  <div class="card-grid">
+    <div class="card" style="border-top:2px solid var(--cyan);">
+      <h3 style="color:var(--cyan);">Method 1 — Dockerfile</h3>
+      <pre style="margin:8px 0;"><span class="kw">FROM</span> ubuntu
+<span class="kw">VOLUME</span> ["volume1"]</pre>
+      <code style="font-size:0.76rem;">docker run -it --name cont-1 img</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--orange);">
+      <h3 style="color:var(--orange);">Method 2 — CLI Flag</h3>
+      <pre style="margin:8px 0;">docker run -it --name cont-4 \
+  -v /volume2 ubuntu</pre>
+      <code style="font-size:0.76rem;">docker run --volumes-from cont-4</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green);">
+      <h3 style="color:var(--green);">Method 3 — AWS EBS</h3>
+      <pre style="margin:8px 0;">docker run -v /mnt/ebs:/data ...</pre>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:6px;">Data persists even if EC2 terminates. Set <strong>Delete on Termination → NO</strong>.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-warn" style="margin-top:8px;">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>EBS Volume Setup:</strong> Create in same AZ as EC2 → Attach → <code>mkfs.ext4 /dev/xvdb</code> → <code>mkdir /mnt/ebs</code> → <code>mount</code> → add to <code>/etc/fstab</code> for persistence on reboot.</div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>📂 Docker's Home Directory Structure</h3>
+    <div class="tree">
+<span class="t-dir">/var/lib/docker/</span>
+├── <span class="t-dir">volumes/</span>  <span class="t-note">← your named volumes live here</span>
+│   └── <span class="t-dir">4eee37713e82.../</span>
+│       └── <span class="t-dir">_data/</span>  <span class="t-note">← actual data files</span>
+│           ├── <span class="t-file">file1.txt</span>
+│           └── <span class="t-file">hello1.java</span>  <span class="t-note">← bidirectional sync ⟺</span>
+├── <span class="t-dir">containers/</span>
+├── <span class="t-dir">image/</span>
+├── <span class="t-dir">overlay2/</span>
+└── <span class="t-dir">network/</span>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §6 IMAGES ── -->
+<section class="section" id="images">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Docker Image Types</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <p>A Docker Image is an <strong>immutable, read-only template</strong> used to create containers. Uses a <strong>layered structure (OverlayFS)</strong> — each Dockerfile instruction creates a new layer. Layers are cached for faster builds.</p>
+  </div>
+
+  <div class="flow" style="margin:24px 0;flex-direction:column;align-items:flex-start;gap:0;max-width:450px;">
+    <div class="flow-box" style="width:100%;background:rgba(0,229,255,0.06);border-color:var(--cyan);color:var(--cyan);">Base Image (Ubuntu/Alpine)</div>
+    <div class="flow-arrow" style="padding:2px 20px;align-self:center;">↓</div>
+    <div class="flow-box" style="width:92%;margin:0 auto;background:rgba(255,107,53,0.06);border-color:var(--orange);color:var(--orange);">Dependencies Layer (npm install / pip install)</div>
+    <div class="flow-arrow" style="padding:2px 20px;align-self:center;">↓</div>
+    <div class="flow-box" style="width:84%;margin:0 auto;background:rgba(6,214,160,0.06);border-color:var(--green);color:var(--green);">Application Code Layer (COPY app/)</div>
+    <div class="flow-arrow" style="padding:2px 20px;align-self:center;">↓</div>
+    <div class="flow-box" style="width:76%;margin:0 auto;background:rgba(255,209,102,0.06);border-color:var(--yellow);color:var(--yellow);">Configuration Layer (ENV / EXPOSE)</div>
+    <div class="flow-arrow" style="padding:2px 20px;align-self:center;">↓</div>
+    <div class="flow-box" style="width:68%;margin:0 auto;background:rgba(255,107,157,0.06);border-color:var(--pink);color:var(--pink);">Container (thin writable layer on top)</div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 16px;">🐳 The 5 Types of Base Images</h3>
+  <div class="size-bars">
+    <div class="size-row">
+      <div class="size-label">Standard</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:100%;background:linear-gradient(90deg,#1a3050,#0f2840);color:var(--muted);">python:3.11</div></div>
+      <div class="size-val">300MB–1.6GB</div>
+    </div>
+    <div class="size-row">
+      <div class="size-label">Slim</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:55%;background:linear-gradient(90deg,rgba(0,188,212,0.3),rgba(0,188,212,0.15));color:var(--cyan);">python:3.11-slim</div></div>
+      <div class="size-val">50–150MB</div>
+    </div>
+    <div class="size-row">
+      <div class="size-label">Alpine</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:22%;background:linear-gradient(90deg,rgba(6,214,160,0.4),rgba(6,214,160,0.2));color:var(--green);">:alpine</div></div>
+      <div class="size-val">5–50MB</div>
+    </div>
+    <div class="size-row">
+      <div class="size-label">Distroless</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:15%;background:linear-gradient(90deg,rgba(255,107,53,0.4),rgba(255,107,53,0.2));color:var(--orange);">distroless</div></div>
+      <div class="size-val">2–30MB</div>
+    </div>
+    <div class="size-row">
+      <div class="size-label">Scratch</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:2%;background:rgba(122,147,184,0.2);color:var(--muted);"></div></div>
+      <div class="size-val">0 MB</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap" style="margin-top:20px;">
+    <table>
+      <tr><th>Type</th><th>Size</th><th>Shell</th><th>Pkg Mgr</th><th>Debug</th><th>Use Case</th></tr>
+      <tr><td>🔵 Standard</td><td>300MB+</td><td class="yes">✅ bash</td><td class="yes">✅ apt</td><td class="yes">Easy</td><td>Development</td></tr>
+      <tr><td>🟡 Slim</td><td>50–150MB</td><td class="yes">✅ sh</td><td class="yes">✅ apt</td><td class="yes">Easy</td><td>Python/Node Production</td></tr>
+      <tr><td>🟢 Alpine</td><td>5–50MB</td><td class="yes">✅ sh</td><td class="warn">✅ apk</td><td class="warn">Medium</td><td>Go/Node Lightweight</td></tr>
+      <tr><td>🔴 Distroless</td><td>2–30MB</td><td class="no">❌ None</td><td class="no">❌ None</td><td class="no">Hard</td><td>Secure Production</td></tr>
+      <tr><td>⬛ Scratch</td><td>0 MB</td><td class="no">❌ None</td><td class="no">❌ None</td><td class="no">Impossible</td><td>Go/Rust Static Bins</td></tr>
+    </table>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 16px;">🎯 Which Image for Which Language?</h3>
+  <div class="card-grid">
+    <div class="card" style="border-left:3px solid var(--cyan);">
+      <h3>🐹 Go Application</h3>
+      <p style="font-size:0.88rem;"><strong style="color:var(--green);">Best:</strong> <code>scratch</code> &gt; <code>distroless</code> &gt; <code>alpine</code><br>
+      Go compiles to static binary — no OS deps needed.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--yellow);">
+      <h3>🐍 Python Application</h3>
+      <p style="font-size:0.88rem;"><strong style="color:var(--green);">Best:</strong> <code>python:3.11-slim</code><br>
+      <strong style="color:var(--red);">Avoid Alpine!</strong> Many Python packages use C extensions compiled against glibc — Alpine uses musl libc which causes crashes.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green);">
+      <h3>🟢 Node.js Application</h3>
+      <p style="font-size:0.88rem;"><strong style="color:var(--green);">Best:</strong> <code>node:18-slim</code> &gt; <code>node:18-alpine</code><br>
+      Slim for npm packages needing native modules.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--orange);">
+      <h3>♨️ Java Application</h3>
+      <p style="font-size:0.88rem;"><strong style="color:var(--green);">Best:</strong> <code>eclipse-temurin:21-jdk-slim</code> or <code>gcr.io/distroless/java21</code><br>
+      JVM needs proper glibc — avoid Alpine for Java.</p>
+    </div>
+  </div>
+
+  <!-- Image hierarchy -->
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 14px;">📊 Image Hierarchy</h3>
+  <div class="flow">
+    <div class="flow-box" style="background:rgba(122,147,184,0.08);border-color:var(--muted);color:var(--muted);">🪨 Base Image<br><span style="font-size:0.65rem;">FROM scratch — no parent</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box cyan">👶 Child Image<br><span style="font-size:0.65rem;">FROM python:3.11-slim</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box orange">✅ Official Image<br><span style="font-size:0.65rem;">Verified by community</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box green">🏗️ App-Specific<br><span style="font-size:0.65rem;">YOUR custom image</span></div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §7 MULTISTAGE ── -->
+<section class="section" id="multistage">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Multi-Stage Dockerfile Builds</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="callout callout-fire">
+    <span class="callout-icon">🚀</span>
+    <div><strong>Why Multi-Stage?</strong> Instructions like FROM, RUN, COPY, ADD create layers and bloat image size. Build tools (Maven, Go compiler) are only needed during build — NOT in the final production image.</div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="card-grid">
+      <div style="text-align:center;padding:12px;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--orange);font-size:1.1rem;">Compiled Languages</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:8px;">Java, Go, C/C++, Rust<br>Source code → compiled → binary<br><strong>Requires build tools</strong> (Maven/Go compiler)</p>
+      </div>
+      <div style="text-align:center;padding:12px;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--cyan);font-size:1.1rem;">Interpreted Languages</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:8px;">Python, JavaScript, Ruby, PHP<br>Code runs directly via interpreter<br><strong>No separate build stage needed</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 16px;">🏗️ Multi-Stage Architecture</h3>
+  <div class="stages">
+    <div class="stage-box stage1">
+      <div class="stage-title" style="color:var(--orange);">🔨 Stage 1: BUILD</div>
+      <div class="stage-item">Full compiler image (Maven / Go 1.21)</div>
+      <div class="stage-item">Source code + dependencies</div>
+      <div class="stage-item">Build tools (javac, go build)</div>
+      <div class="stage-item">Compile → produces artifact (.jar / binary)</div>
+      <div class="stage-item" style="color:var(--red);">~600MB–1.3GB — NEVER ships</div>
+    </div>
+    <div class="stage-arrow">
+      →<br><span>only<br>artifact<br>crosses</span>
+    </div>
+    <div class="stage-box stage2">
+      <div class="stage-title" style="color:var(--green);">🚀 Stage 2: RUN</div>
+      <div class="stage-item">Minimal runtime (Alpine / JRE)</div>
+      <div class="stage-item"><code>COPY --from=builder /app/output.jar .</code></div>
+      <div class="stage-item">No Maven, no compiler, no source code</div>
+      <div class="stage-item">Production-ready, secure, lean</div>
+      <div class="stage-item" style="color:var(--green);">~20MB–320MB ✅ Ships to prod</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin:28px 0 14px;">📏 Size Comparison — Go Application</h3>
+  <div class="size-bars">
+    <div class="size-row">
+      <div class="size-label" style="color:var(--red);">Single-Stage</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:100%;background:linear-gradient(90deg,rgba(239,68,68,0.3),rgba(239,68,68,0.1));color:var(--red);">golang:1.21 (full)</div></div>
+      <div class="size-val" style="color:var(--red);">1.29 GB ❌</div>
+    </div>
+    <div class="size-row">
+      <div class="size-label" style="color:var(--green);">Multi-Stage</div>
+      <div class="size-bar-wrap"><div class="size-bar" style="width:2%;background:linear-gradient(90deg,rgba(6,214,160,0.5),rgba(6,214,160,0.3));color:var(--green);"></div></div>
+      <div class="size-val" style="color:var(--green);">21.9 MB ✅</div>
+    </div>
+  </div>
+
+  <div class="example-block">
+    <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;">Go Multi-Stage Dockerfile</h4>
+    <pre><span class="cm"># Stage 1: Build</span>
+<span class="kw">FROM</span> golang:1.21 <span class="kw">AS</span> builder
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> . .
+<span class="kw">RUN</span> CGO_ENABLED=0 GOOS=linux go build -o hello main.go
+
+<span class="cm"># Stage 2: Run (Alpine minimal)</span>
+<span class="kw">FROM</span> alpine:3.19
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> --from=builder /app/hello .   <span class="cm"># only the binary crosses over</span>
+<span class="kw">EXPOSE</span> 8080
+<span class="kw">CMD</span> ["./hello"]</pre>
+  </div>
+
+  <div class="example-block" style="margin-top:16px;">
+    <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;">Java Spring Boot Multi-Stage (Apple M1/M2/M3)</h4>
+    <pre><span class="cm"># Stage 1: Build (Maven compiles .java → .jar)</span>
+<span class="kw">FROM</span> maven:3.9.3-amazoncorretto-17 <span class="kw">AS</span> builder
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> pom.xml .
+<span class="kw">RUN</span> mvn dependency:go-offline -B   <span class="cm"># pre-download deps (cached layer)</span>
+<span class="kw">COPY</span> src ./src
+<span class="kw">RUN</span> mvn clean package -DskipTests  <span class="cm"># produces .jar in target/</span>
+
+<span class="cm"># Stage 2: Run (minimal Alpine JRE)</span>
+<span class="kw">FROM</span> amazoncorretto:17-alpine
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> --from=builder /app/target/*.jar app.jar
+<span class="kw">EXPOSE</span> 8080
+<span class="kw">ENTRYPOINT</span> ["java", "-jar", "app.jar"]</pre>
+    <div class="callout callout-warn" style="margin-top:12px;">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Apple M1/M2/M3:</strong> Use <code>amazoncorretto-17</code> instead of <code>openjdk-17</code> — OpenJDK images may not have ARM64 variants on Docker Hub.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>⚡ Resource Limits</h3>
+    <ul class="cmd-list">
+      <li><code>docker stats &lt;containerID&gt;</code> <span>See CPU % and Memory % live</span></li>
+      <li><code>docker run --cpus="0.1" --memory="100MB" ubuntu</code> <span>Limit CPU and memory at creation</span></li>
+      <li><code>docker update &lt;name&gt; --cpus="0.5" --memory="200MB"</code> <span>Update limits on running container</span></li>
+    </ul>
+    <div class="callout callout-warn" style="margin-top:8px;">
+      <span class="callout-icon">⚠️</span>
+      <div>Memory limits can only be <strong>decreased</strong> after setting — not increased. For advanced resource management use <strong>Kubernetes Resource Quotas</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §8 COMPOSE ── -->
+<section class="section" id="compose">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Docker Compose</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <p>Docker Compose lets you define and run <strong>multi-container applications</strong> using a single <code>docker-compose.yml</code> file. Perfect for apps with frontend, backend, database, and cache running together.</p>
+  </div>
+
+  <pre style="margin-top:16px;"><span class="cm"># docker-compose.yml structure</span>
+<span class="kw">version:</span> <span class="str">"3.9"</span>
+<span class="kw">services:</span>
+  <span class="tag">backend:</span>
+    <span class="kw">build:</span> ./backend            <span class="cm"># path to Dockerfile</span>
+    <span class="kw">image:</span> my-backend:v1
+    <span class="kw">container_name:</span> backend-ctr
+    <span class="kw">ports:</span>
+      - <span class="str">"5000:5000"</span>
+    <span class="kw">networks:</span>
+      - app-net
+  <span class="tag">db:</span>
+    <span class="kw">image:</span> mysql:8.0
+    <span class="kw">volumes:</span>
+      - db_data:/var/lib/mysql
+    <span class="kw">networks:</span>
+      - app-net
+<span class="kw">volumes:</span>
+  db_data:
+<span class="kw">networks:</span>
+  app-net:</pre>
+
+  <div class="tbl-wrap" style="margin-top:20px;">
+    <table>
+      <tr><th>Command</th><th>Builds Image?</th><th>Reflects Code Changes?</th><th>Speed</th><th>Use When</th></tr>
+      <tr><td><code>docker compose up -d</code></td><td class="no">❌ No</td><td class="no">❌ No</td><td class="yes">⚡ Fast</td><td>No changes made</td></tr>
+      <tr><td><code>docker compose up -d --build</code></td><td class="yes">✅ Yes</td><td class="yes">✅ Yes</td><td class="warn">🐢 Slower</td><td>Code/Dockerfile changed</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §9 NETWORKING ── -->
+<section class="section" id="networking">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Docker Networking</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">🌐</span>
+    <div><strong>Docker networking</strong> enables communication between multiple containers running on the same host or different Docker hosts. Networks are isolated — containers on different networks cannot talk unless configured.</div>
+  </div>
+
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="card" style="border-top:2px solid var(--cyan);">
+      <h3 style="color:var(--cyan);">1️⃣ Bridge Network (Default)</h3>
+      <p style="font-size:0.86rem;">Used when 2 containers on the <strong>same host</strong> need to communicate. Docker creates a virtual bridge interface (docker0). Each container gets its own IP.</p>
+      <code style="display:block;font-size:0.74rem;margin-top:10px;">docker network create mynet<br>docker run --network=mynet app1</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--orange);">
+      <h3 style="color:var(--orange);">2️⃣ Host Network</h3>
+      <p style="font-size:0.86rem;">Container uses the <strong>host machine's network directly</strong> (EC2's VPC). No port mapping needed. Container ports become host ports.</p>
+      <code style="display:block;font-size:0.74rem;margin-top:10px;">docker run --network=host app</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--muted);">
+      <h3 style="color:var(--muted);">3️⃣ None Network</h3>
+      <p style="font-size:0.86rem;">Container has <strong>no network access</strong> at all. Completely isolated — use when you don't want to expose any application.</p>
+      <code style="display:block;font-size:0.74rem;margin-top:10px;">docker run --network=none app</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green);">
+      <h3 style="color:var(--green);">4️⃣ Overlay Network</h3>
+      <p style="font-size:0.86rem;">For containers on <strong>different Docker hosts</strong>. Used with Docker Swarm and Kubernetes. Creates a distributed network across multiple machines.</p>
+      <code style="display:block;font-size:0.74rem;margin-top:10px;">docker network create --driver overlay myswarm</code>
+    </div>
+    <div class="card" style="border-top:2px solid var(--yellow);">
+      <h3 style="color:var(--yellow);">5️⃣ Macvlan Network</h3>
+      <p style="font-size:0.86rem;">Attaches containers <strong>directly to the physical network</strong>. Gives containers their own MAC addresses on the physical network for advanced use cases.</p>
+    </div>
+  </div>
+
+  <div class="example-block" style="margin-top:20px;">
+    <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;">🔗 Microservices Network Flow</h4>
+    <div class="net-diagram">
+      <div class="net-row">
+        <div class="net-node" style="border-color:var(--cyan);color:var(--cyan);">Frontend<br>:3000</div>
+        <div class="net-hline"></div>
+        <div class="net-node" style="border-color:var(--orange);color:var(--orange);">Backend<br>:5000</div>
+        <div class="net-hline"></div>
+        <div class="net-node" style="border-color:var(--green);color:var(--green);">Database<br>:5432</div>
+        <div class="net-hline"></div>
+        <div class="net-node" style="border-color:var(--yellow);color:var(--yellow);">Redis<br>:6379</div>
+      </div>
+      <div class="net-line"></div>
+      <div class="net-bus">User-Defined Bridge Network (app-network)</div>
+      <div class="net-line"></div>
+      <div class="net-node" style="border-color:var(--muted);">Docker Host (EC2)</div>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted);margin-top:12px;">On a user-defined bridge network, containers use <strong>container names as DNS hostnames</strong> — no need for IPs. Frontend calls <code>http://backend:5000</code> directly.</p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §10 DOCKERIGNORE ── -->
+<section class="section" id="ignore">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>.dockerignore File</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="callout callout-fire">
+    <span class="callout-icon">🔥</span>
+    <div>When you run <code>docker build .</code>, Docker sends the <strong>ENTIRE directory</strong> (build context) to the Docker daemon — including node_modules, .git, logs, and secrets. Without .dockerignore this causes: huge build context, slow CI/CD, and <strong>security leaks</strong>!</div>
+  </div>
+
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="card" style="border-left:3px solid var(--red);">
+      <h3 style="color:var(--red);">❌ Without .dockerignore</h3>
+      <pre style="margin:8px 0;font-size:0.75rem;">Sending build context to Docker daemon
+850 MB</pre>
+      <ul style="list-style:none;font-size:0.82rem;">
+        <li style="color:var(--red);">✗ Slow CI/CD pipeline</li>
+        <li style="color:var(--red);">✗ .env secrets leaked into image</li>
+        <li style="color:var(--red);">✗ node_modules copied unnecessarily</li>
+        <li style="color:var(--red);">✗ Cache invalidated on every change</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green);">
+      <h3 style="color:var(--green);">✅ With .dockerignore</h3>
+      <pre style="margin:8px 0;font-size:0.75rem;">Sending build context to Docker daemon
+45 MB</pre>
+      <ul style="list-style:none;font-size:0.82rem;">
+        <li style="color:var(--green);">✓ Fast builds</li>
+        <li style="color:var(--green);">✓ Secure image (no secrets)</li>
+        <li style="color:var(--green);">✓ Efficient layer caching</li>
+        <li style="color:var(--green);">✓ Reduced infrastructure cost</li>
+      </ul>
+    </div>
+  </div>
+
+  <pre style="margin-top:16px;"><span class="cm"># .dockerignore — Best Practice Template</span>
+
+<span class="cm"># Git files</span>
+.git
+.gitignore
+
+<span class="cm"># Dependencies (rebuilt inside container)</span>
+node_modules
+vendor
+
+<span class="cm"># Secrets (CRITICAL — never bake these in!)</span>
+.env
+*.pem
+secrets/
+
+<span class="cm"># Logs and temp</span>
+*.log
+logs/
+tmp/
+
+<span class="cm"># OS artifacts</span>
+.DS_Store
+Thumbs.db
+
+<span class="cm"># Build artifacts</span>
+dist/
+build/
+target/
+
+<span class="cm"># Advanced: ignore everything EXCEPT these files</span>
+<span class="str">*</span>
+<span class="str">!app.py</span>
+<span class="str">!requirements.txt</span></pre>
+
+  <div class="tbl-wrap" style="margin-top:16px;">
+    <table>
+      <tr><th>Feature</th><th>.dockerignore</th><th>.gitignore</th></tr>
+      <tr><td>Scope</td><td>Docker build context</td><td>Git repository</td></tr>
+      <tr><td>Purpose</td><td>Optimize builds + security</td><td>Version control</td></tr>
+      <tr><td>Affects image</td><td class="yes">Yes</td><td class="no">No</td></tr>
+      <tr><td>Security role</td><td class="yes">High 🔐</td><td class="warn">Medium</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §11 REGISTRY ── -->
+<section class="section" id="registry">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Private Registry & Push/Pull</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="flow" style="margin:20px 0;">
+    <div class="flow-box cyan">Developer<br>Code Push</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box orange">CI/CD<br>docker build</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box yellow">docker tag<br>&amp; push</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box green">Private Registry<br>(ECR / Hub)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box pink">K8s/ECS<br>pulls &amp; deploys</div>
+  </div>
+
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="card">
+      <h3>🐳 Docker Hub Private Repo</h3>
+      <ul class="cmd-list">
+        <li><span style="min-width:24px">1️⃣</span> <span>Create private repo on Docker Hub</span></li>
+        <li><code>docker login</code> <span>Authenticate with PAT (Personal Access Token)</span></li>
+        <li><code>docker tag myapp:latest user/myapp:v1</code> <span>Tag with repo format</span></li>
+        <li><code>docker push user/myapp:v1</code> <span>Push to private registry</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>☁️ AWS ECR (Industry Standard)</h3>
+      <pre style="font-size:0.73rem;margin:8px 0;">aws ecr get-login-password \
+  --region ap-south-1 | \
+docker login --username AWS \
+  --password-stdin \
+  &lt;account-id&gt;.dkr.ecr.ap-south-1.amazonaws.com
+
+docker tag myapp:latest \
+  &lt;account-id&gt;.dkr.ecr.ap-south-1.amazonaws.com/myapp:v1
+
+docker push \
+  &lt;account-id&gt;.dkr.ecr.ap-south-1.amazonaws.com/myapp:v1</pre>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>🔑 PAT Permission Levels</h3>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Permission</th><th>Can Pull Public</th><th>Can Pull Private</th><th>Can Push</th><th>Can Delete</th></tr>
+        <tr><td>Public read-only</td><td class="yes">✅</td><td class="no">❌</td><td class="no">❌</td><td class="no">❌</td></tr>
+        <tr><td>Read-only</td><td class="yes">✅</td><td class="yes">✅</td><td class="no">❌</td><td class="no">❌</td></tr>
+        <tr><td>Read &amp; Write</td><td class="yes">✅</td><td class="yes">✅</td><td class="yes">✅</td><td class="no">❌</td></tr>
+        <tr><td>Read, Write &amp; Delete</td><td class="yes">✅</td><td class="yes">✅</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-warn" style="margin-top:16px;">
+    <span class="callout-icon">🔐</span>
+    <div><strong>Security:</strong> Never hardcode passwords in scripts. Use <code>DOCKER_PASSWORD</code> as GitHub Secret. Never push images with <code>.env</code> secrets baked in — always use <code>.dockerignore</code>.</div>
+  </div>
+
+  <!-- Mutable vs Immutable -->
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="card" style="border-left:3px solid var(--yellow);">
+      <h3>🔄 Mutable Container</h3>
+      <p style="font-size:0.88rem;">Container where you can make changes <strong>directly inside</strong> while it's running. Used for development and debugging. Changes don't persist after deletion.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green);">
+      <h3>🔒 Immutable Container</h3>
+      <p style="font-size:0.88rem;">Container where configuration/files <strong>cannot be changed</strong> once running. Production standard — ensures consistency across environments.</p>
+    </div>
+  </div>
+
+  <!-- Foreground vs Background -->
+  <div class="card" style="margin-top:16px;">
+    <h3>⚡ Foreground vs Background Mode</h3>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>Mode</th><th>Flag</th><th>Terminal</th><th>I/O Streams</th><th>Use Case</th></tr>
+        <tr><td>Foreground</td><td><code>-it</code></td><td>Attached</td><td>Direct STDIN/STDOUT</td><td>Dev/debugging</td></tr>
+        <tr><td>Background</td><td><code>-d</code></td><td>Detached</td><td>Via docker logs/exec</td><td>Production</td></tr>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-top:12px;">
+      <span class="callout-icon">💡</span>
+      <div><strong>Key insight:</strong> The core concept isn't just "interaction" — it's <strong>process attachment</strong>. Foreground = attached process, Background = detached process. Kubernetes always runs containers detached (no terminal).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── §12 PROJECTS ── -->
+<section class="section" id="projects">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Hands-On Projects</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-num">PROJECT 1</div>
+    <div class="project-title">🌐 Portfolio Website Deployment</div>
+    <div class="badge-cyan badge" style="margin-bottom:12px;display:inline-block;">nginx:alpine</div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Containerize a static portfolio website using nginx:alpine as base image. Deploy on EC2 via Docker.</p>
+    <pre style="font-size:0.77rem;"><span class="kw">FROM</span> nginx:alpine
+<span class="kw">COPY</span> . /usr/share/nginx/html
+<span class="kw">EXPOSE</span> 80
+<span class="kw">CMD</span> ["nginx", "-g", "daemon off;"]
+
+docker build -t akshay-portfolio .
+docker run -d -p 80:80 --name portfolio akshay-portfolio</pre>
+  </div>
+
+  <div class="project-card">
+    <div class="project-num">PROJECT 2</div>
+    <div class="project-title">🐍 Python Image Type Comparison</div>
+    <div class="badge-yellow badge" style="margin-bottom:12px;display:inline-block;">Standard | Slim | Alpine | Distroless</div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Same Flask app built with 4 different base images. Demonstrates 94% size reduction by switching from Standard → Alpine.</p>
+    <div class="size-bars" style="margin:12px 0;">
+      <div class="size-row"><div class="size-label" style="font-size:0.75rem;">py-standard</div><div class="size-bar-wrap"><div class="size-bar" style="width:100%;background:rgba(239,68,68,0.2);color:var(--red);font-size:0.65rem;">1.62 GB</div></div><div class="size-val" style="font-size:0.73rem;">Baseline</div></div>
+      <div class="size-row"><div class="size-label" style="font-size:0.75rem;">py.slim</div><div class="size-bar-wrap"><div class="size-bar" style="width:15%;background:rgba(0,188,212,0.3);color:var(--cyan);font-size:0.65rem;">236MB</div></div><div class="size-val" style="font-size:0.73rem;">↓85%</div></div>
+      <div class="size-row"><div class="size-label" style="font-size:0.75rem;">py.alpine</div><div class="size-bar-wrap"><div class="size-bar" style="width:5%;background:rgba(6,214,160,0.4);color:var(--green);font-size:0.65rem;">88MB</div></div><div class="size-val" style="font-size:0.73rem;color:var(--green);">↓94% ✅</div></div>
+      <div class="size-row"><div class="size-label" style="font-size:0.75rem;">py.distroless</div><div class="size-bar-wrap"><div class="size-bar" style="width:14%;background:rgba(255,107,53,0.3);color:var(--orange);font-size:0.65rem;">223MB</div></div><div class="size-val" style="font-size:0.73rem;">↓86%</div></div>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-num">PROJECT 3 &amp; 4</div>
+    <div class="project-title">🐹 Go + ♨️ Java Multi-Stage Docker</div>
+    <div class="badge-green badge" style="margin-bottom:12px;display:inline-block;">Multi-Stage Build</div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Go app: 1.29GB → 21.9MB (98% reduction!). Java Spring Boot app: ~700MB → 320MB (54% reduction). Both use multi-stage builds.</p>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>App</th><th>Single-Stage</th><th>Multi-Stage</th><th>Reduction</th></tr>
+        <tr><td>Go App</td><td class="no">1.29 GB</td><td class="yes">21.9 MB</td><td class="yes">98% 🔥</td></tr>
+        <tr><td>Java Spring Boot</td><td class="no">~700 MB</td><td class="yes">~320 MB</td><td class="yes">54% ✅</td></tr>
+        <tr><td>Java .war (Tomcat)</td><td class="no">~800 MB</td><td class="yes">~350 MB</td><td class="yes">~56% ✅</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-num">PROJECT 5</div>
+    <div class="project-title">🏠 Casa Royale — Luxury PG Marketing Website</div>
+    <div class="badge-pink badge" style="margin-bottom:12px;display:inline-block;">Spring Boot + Multi-Stage Docker</div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Full luxury marketing website for Casa Royale PG (Hinjewadi, Pune). Built with Java Spring Boot. Containerized using multi-stage Docker build. Features 33+ amenities showcase, video tour, contact section.</p>
+    <div class="card-grid" style="font-size:0.82rem;margin-top:12px;">
+      <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:8px;padding:12px;">
+        <strong>Spring Boot Static Serving</strong><br>
+        <code style="font-size:0.72rem;">src/main/resources/static/</code> → served at root URL automatically
+      </div>
+      <div style="background:rgba(255,107,53,0.05);border:1px solid rgba(255,107,53,0.15);border-radius:8px;padding:12px;">
+        <strong>Smart Layer Caching</strong><br>
+        Copy <code>pom.xml</code> first → install deps (cached) → copy <code>src/</code> → build
+      </div>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-num">PROJECT 6</div>
+    <div class="project-title">🎬 CinemaWorld — 5 Microservices | Docker Compose | AWS</div>
+    <div class="badge-orange badge" style="margin-bottom:12px;display:inline-block;">Docker Compose | Microservices</div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Full industry-level microservices deployment with Docker Compose. Frontend + Backend + Database + Cache + Message Queue. All services communicate via a user-defined bridge network.</p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── QUICK CHEAT SHEET ── -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>⚡ Quick Cheat Sheet</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3 style="color:var(--cyan);">Container Commands</h3>
+      <ul class="cmd-list">
+        <li><code>docker run -d -p 80:80 img</code><span>Background + port map</span></li>
+        <li><code>docker run -it img /bin/bash</code><span>Interactive shell</span></li>
+        <li><code>docker ps</code><span>Running containers</span></li>
+        <li><code>docker ps -a</code><span>All containers</span></li>
+        <li><code>docker stop / rm &lt;ctr&gt;</code><span>Stop / delete</span></li>
+        <li><code>docker logs -f &lt;ctr&gt;</code><span>Stream logs</span></li>
+        <li><code>docker inspect &lt;ctr&gt;</code><span>Full container info</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--orange);">Image Commands</h3>
+      <ul class="cmd-list">
+        <li><code>docker build -t name:v1 .</code><span>Build from Dockerfile</span></li>
+        <li><code>docker images</code><span>List images</span></li>
+        <li><code>docker pull ubuntu:22.04</code><span>Pull from registry</span></li>
+        <li><code>docker push user/img:v1</code><span>Push to registry</span></li>
+        <li><code>docker rmi &lt;img&gt;</code><span>Remove image</span></li>
+        <li><code>docker image prune</code><span>Remove dangling images</span></li>
+        <li><code>docker commit &lt;ctr&gt; img</code><span>Image from container</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--green);">Volume Commands</h3>
+      <ul class="cmd-list">
+        <li><code>docker volume ls</code><span>List volumes</span></li>
+        <li><code>docker volume create vol1</code><span>Create named volume</span></li>
+        <li><code>docker volume inspect vol1</code><span>Inspect volume</span></li>
+        <li><code>docker run -v vol:/path img</code><span>Attach named volume</span></li>
+        <li><code>docker run -v /host:/ctr img</code><span>Bind mount</span></li>
+        <li><code>--volumes-from cont-1</code><span>Share volumes</span></li>
+        <li><code>docker inspect ctr | grep Volume</code><span>Check attached volumes</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--yellow);">Network Commands</h3>
+      <ul class="cmd-list">
+        <li><code>docker network ls</code><span>List networks</span></li>
+        <li><code>docker network create mynet</code><span>Create bridge network</span></li>
+        <li><code>docker network inspect mynet</code><span>Inspect network</span></li>
+        <li><code>docker run --network mynet img</code><span>Attach to network</span></li>
+        <li><code>docker network connect mynet ctr</code><span>Connect running container</span></li>
+        <li><code>docker network rm mynet</code><span>Remove network</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────── INSTALL ── -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">14</span>
+    <h2>🛠️ Docker Installation on Ubuntu</h2>
+    <div class="section-line"></div>
+  </div>
+  <pre><span class="cm"># 1. Update and install dependencies</span>
+sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release
+
+<span class="cm"># 2. Add Docker's official GPG key</span>
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+<span class="cm"># 3. Set up Docker repository</span>
+echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+<span class="cm"># 4. Install Docker Engine</span>
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io \
+  docker-buildx-plugin docker-compose-plugin
+
+<span class="cm"># 5. Post-install: run without sudo</span>
+sudo usermod -aG docker $USER && newgrp docker
+
+<span class="cm"># 6. Enable at boot + verify</span>
+sudo systemctl enable docker && sudo systemctl start docker
+docker --version && docker run hello-world</pre>
+
+  <div class="callout callout-warn" style="margin-top:16px;">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Why NOT <code>apt install docker.io</code>?</strong> Ubuntu's repository version is outdated and missing latest features like BuildKit, Compose V2, and security patches. Always install from Docker's official repository.</div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>🔗 Jenkins + Docker Integration</h3>
+    <p style="font-size:0.9rem;margin-bottom:12px;">For Jenkins to run Docker commands, Jenkins user needs access to the Docker socket:</p>
+    <ul class="cmd-list">
+      <li><code>sudo usermod -aG docker jenkins</code><span>Add Jenkins to docker group (MOST IMPORTANT)</span></li>
+      <li><code>sudo systemctl restart jenkins</code><span>Apply group change</span></li>
+      <li><code>sudo su - jenkins && docker ps</code><span>Verify Docker access from Jenkins user</span></li>
+    </ul>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════════════ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-name">Akshay Sawant</div>
+    <div class="footer-role">AWS DevOps Engineer · AWS Solutions Architect Associate · Pune, Maharashtra</div>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+      <span class="badge badge-cyan">Docker</span>
+      <span class="badge badge-orange">AWS</span>
+      <span class="badge badge-green">DevOps</span>
+      <span class="badge badge-yellow">Kubernetes</span>
+      <span class="badge badge-pink">CI/CD</span>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted);">
+      ⭐ If this helped you, give the repo a star! ⭐<br>
+      <span style="font-size:0.75rem;opacity:0.6;">Part of the DevOps Learning Series · Scenario-based Docker Notes</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+// Animate size bars on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.size-bar').forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(() => { bar.style.width = w; }, 200);
+  });
+});
+</script>
+</body>
+</html>
