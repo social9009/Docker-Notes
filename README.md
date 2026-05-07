@@ -91,33 +91,38 @@ graph LR
 ### Client-Server Model
 
 ```mermaid
-flowchart TB
-    subgraph Client["🖥️ Docker Client"]
-        CLI[Docker CLI]
-        API[REST API]
+graph TB
+
+    subgraph VM["Virtual Machines"]
+        VMApps["Applications"]
+        VMBins["Bins and Libraries"]
+        GuestOS["Guest Operating System"]
+        Hypervisor["Hypervisor"]
+        HostOS1["Host Operating System"]
+        Infrastructure1["Infrastructure"]
     end
-    
-    subgraph Host["🏠 Docker Host"]
-        Daemon[🔧 Docker Daemon]
-        Images[(📦 Images)]
-        Containers[📦 Running Containers]
+
+    subgraph Container["Docker Containers"]
+        Apps["Applications"]
+        Bins["Bins and Libraries"]
+        DockerEngine["Docker Engine"]
+        HostOS2["Host Operating System"]
+        Infrastructure2["Infrastructure"]
     end
-    
-    subgraph Registry["📚 Docker Registry"]
-        Hub[🌐 Docker Hub]
-        Private[🔒 Private Registry]
-    end
-    
-    CLI -->|docker pull/run/build| Daemon
-    API -->|HTTP/HTTPS| Daemon
-    Daemon -->|manages| Images
-    Daemon -->|creates/runs| Containers
-    Daemon <-->|push/pull| Hub
-    Daemon <-->|push/pull| Private
-    
-    style Client fill:#e3f2fd
-    style Host fill:#fff3e0
-    style Registry fill:#f3e5f5
+
+    VMApps --> VMBins
+    VMBins --> GuestOS
+    GuestOS --> Hypervisor
+    Hypervisor --> HostOS1
+    HostOS1 --> Infrastructure1
+
+    Apps --> Bins
+    Bins --> DockerEngine
+    DockerEngine --> HostOS2
+    HostOS2 --> Infrastructure2
+
+    style VM fill:#ffebee
+    style Container fill:#e8f5e9
 ```
 
 ### Key Components
