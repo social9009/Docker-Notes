@@ -90,6 +90,7 @@ graph LR
 
 ### Client-Server Model
 
+```mermaid
 flowchart TB
     subgraph Client["🖥️ Docker Client"]
         CLI[Docker CLI]
@@ -117,6 +118,8 @@ flowchart TB
     style Client fill:#e3f2fd
     style Host fill:#fff3e0
     style Registry fill:#f3e5f5
+```
+
 ### Key Components
 
 | Component | Purpose | Example |
