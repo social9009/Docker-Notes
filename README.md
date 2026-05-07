@@ -90,30 +90,33 @@ graph LR
 
 ### Client-Server Model
 
-graph TB
-    subgraph VM["🖥️ Virtual Machines"]
-        VMApps["App A | App B | App C"]
-        VMBins["Bins/Libs | Bins/Libs | Bins/Libs"]
-        GuestOS["Guest OS | Guest OS | Guest OS"]
-        Hypervisor[Hypervisor]
-        HostOS1[Host Operating System]
-        Infrastructure1[Infrastructure]
+flowchart TB
+    subgraph Client["🖥️ Docker Client"]
+        CLI[Docker CLI]
+        API[REST API]
     end
     
-    subgraph Container["🐳 Docker Containers"]
-        Apps["App A | App B | App C"]
-        Bins["Bins/Libs | Bins/Libs | Bins/Libs"]
-        DockerEngine[Docker Engine]
-        HostOS2[Host Operating System]
-        Infrastructure2[Infrastructure]
+    subgraph Host["🏠 Docker Host"]
+        Daemon[🔧 Docker Daemon]
+        Images[(📦 Images)]
+        Containers[📦 Running Containers]
     end
     
-    VMApps --> VMBins --> GuestOS --> Hypervisor --> HostOS1 --> Infrastructure1
-    Apps --> Bins --> DockerEngine --> HostOS2 --> Infrastructure2
+    subgraph Registry["📚 Docker Registry"]
+        Hub[🌐 Docker Hub]
+        Private[🔒 Private Registry]
+    end
     
-    style VM fill:#ffebee
-    style Container fill:#e8f5e9
-
+    CLI -->|docker pull/run/build| Daemon
+    API -->|HTTP/HTTPS| Daemon
+    Daemon -->|manages| Images
+    Daemon -->|creates/runs| Containers
+    Daemon <-->|push/pull| Hub
+    Daemon <-->|push/pull| Private
+    
+    style Client fill:#e3f2fd
+    style Host fill:#fff3e0
+    style Registry fill:#f3e5f5
 ### Key Components
 
 | Component | Purpose | Example |
