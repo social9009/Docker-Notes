@@ -45,14 +45,15 @@ Docker is a **containerization platform** that packages applications with all de
 
 ```mermaid
 graph LR
-    A[📝 Source Code] --> B[🐳 Docker Image]
-    B --> C[📦 Container]
-    C --> D[☁️ Production]
-    
-    style A fill:#e1f5ff
-    style B fill:#b3e5fc
-    style C fill:#4fc3f7
-    style D fill:#0288d1,color:#fff
+
+A["📝 Source Code"] --> B["🐳 Docker Image"]
+B --> C["📦 Container"]
+C --> D["☁️ Production"]
+
+style A fill:#e3f2fd,color:#0d47a1,stroke:#1565c0,stroke-width:3px
+style B fill:#bbdefb,color:#0d47a1,stroke:#1976d2,stroke-width:3px
+style C fill:#4fc3f7,color:#ffffff,stroke:#0288d1,stroke-width:3px
+style D fill:#01579b,color:#ffffff,stroke:#003c8f,stroke-width:3px
 ```
 
 ### Why Docker?
@@ -91,40 +92,58 @@ graph LR
 ### Client-Server Model
 
 ```mermaid
-graph TB
+flowchart TB
 
-    subgraph VM["Virtual Machines"]
-        VMApps["Applications"]
-        VMBins["Bins and Libraries"]
-        GuestOS["Guest Operating System"]
-        Hypervisor["Hypervisor"]
-        HostOS1["Host Operating System"]
-        Infrastructure1["Infrastructure"]
-    end
+subgraph VM["🖥️ Virtual Machines"]
+direction TB
 
-    subgraph Container["Docker Containers"]
-        Apps["Applications"]
-        Bins["Bins and Libraries"]
-        DockerEngine["Docker Engine"]
-        HostOS2["Host Operating System"]
-        Infrastructure2["Infrastructure"]
-    end
+VMApps["📦 Applications"]
+VMBins["📚 Bins and Libraries"]
+GuestOS["💻 Guest OS"]
+Hypervisor["⚙️ Hypervisor"]
+HostOS1["🖥️ Host OS"]
+Infrastructure1["🏢 Infrastructure"]
 
-    VMApps --> VMBins
-    VMBins --> GuestOS
-    GuestOS --> Hypervisor
-    Hypervisor --> HostOS1
-    HostOS1 --> Infrastructure1
+VMApps --> VMBins
+VMBins --> GuestOS
+GuestOS --> Hypervisor
+Hypervisor --> HostOS1
+HostOS1 --> Infrastructure1
 
-    Apps --> Bins
-    Bins --> DockerEngine
-    DockerEngine --> HostOS2
-    HostOS2 --> Infrastructure2
+end
 
-    style VM fill:#ffebee
-    style Container fill:#e8f5e9
+subgraph Container["🐳 Docker Containers"]
+direction TB
+
+Apps["📦 Applications"]
+Bins["📚 Bins and Libraries"]
+DockerEngine["🐳 Docker Engine"]
+HostOS2["🖥️ Host OS"]
+Infrastructure2["🏢 Infrastructure"]
+
+Apps --> Bins
+Bins --> DockerEngine
+DockerEngine --> HostOS2
+HostOS2 --> Infrastructure2
+
+end
+
+style VM fill:#ffebee,stroke:#d32f2f,stroke-width:4px,color:#000000
+style Container fill:#e8f5e9,stroke:#388e3c,stroke-width:4px,color:#000000
+
+style VMApps fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+style VMBins fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+style GuestOS fill:#ef9a9a,stroke:#b71c1c,stroke-width:2px
+style Hypervisor fill:#e57373,stroke:#b71c1c,stroke-width:2px
+style HostOS1 fill:#ef5350,color:#ffffff,stroke:#b71c1c,stroke-width:2px
+style Infrastructure1 fill:#c62828,color:#ffffff,stroke:#7f0000,stroke-width:2px
+
+style Apps fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+style Bins fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+style DockerEngine fill:#81c784,stroke:#1b5e20,stroke-width:2px
+style HostOS2 fill:#4caf50,color:#ffffff,stroke:#1b5e20,stroke-width:2px
+style Infrastructure2 fill:#2e7d32,color:#ffffff,stroke:#1b5e20,stroke-width:2px
 ```
-
 ### Key Components
 
 | Component | Purpose | Example |
@@ -142,31 +161,58 @@ graph TB
 ### Architecture Comparison
 
 ```mermaid
-graph TB
-    subgraph VM["🖥️ Virtual Machines"]
-        VMApps[App A | App B | App C]
-        VMBins[Bins/Libs | Bins/Libs | Bins/Libs]
-        GuestOS[Guest OS | Guest OS | Guest OS]
-        Hypervisor[Hypervisor]
-        HostOS1[Host Operating System]
-        Infrastructure1[Infrastructure]
-    end
-    
-    subgraph Container["🐳 Docker Containers"]
-        Apps[App A | App B | App C]
-        Bins[Bins/Libs | Bins/Libs | Bins/Libs]
-        DockerEngine[Docker Engine]
-        HostOS2[Host Operating System]
-        Infrastructure2[Infrastructure]
-    end
-    
-    VMApps --> VMBins --> GuestOS --> Hypervisor --> HostOS1 --> Infrastructure1
-    Apps --> Bins --> DockerEngine --> HostOS2 --> Infrastructure2
-    
-    style VM fill:#ffebee
-    style Container fill:#e8f5e9
-```
+flowchart TB
 
+subgraph VM["🖥️ Virtual Machines"]
+direction TB
+
+VMApps["📦 Applications"]
+VMBins["📚 Bins & Libraries"]
+GuestOS["💻 Guest OS"]
+Hypervisor["⚙️ Hypervisor"]
+HostOS1["🖥️ Host OS"]
+Infrastructure1["🏢 Infrastructure"]
+
+VMApps --> VMBins
+VMBins --> GuestOS
+GuestOS --> Hypervisor
+Hypervisor --> HostOS1
+HostOS1 --> Infrastructure1
+
+end
+
+subgraph Container["🐳 Docker Containers"]
+direction TB
+
+Apps["📦 Applications"]
+Bins["📚 Bins & Libraries"]
+DockerEngine["🐳 Docker Engine"]
+HostOS2["🖥️ Host OS"]
+Infrastructure2["🏢 Infrastructure"]
+
+Apps --> Bins
+Bins --> DockerEngine
+DockerEngine --> HostOS2
+HostOS2 --> Infrastructure2
+
+end
+
+style VM fill:#ffebee,stroke:#d32f2f,stroke-width:4px
+style Container fill:#e8f5e9,stroke:#388e3c,stroke-width:4px
+
+style VMApps fill:#ffcdd2,stroke:#c62828
+style VMBins fill:#ffcdd2,stroke:#c62828
+style GuestOS fill:#ef9a9a,stroke:#b71c1c
+style Hypervisor fill:#e57373,stroke:#b71c1c
+style HostOS1 fill:#ef5350,color:#ffffff,stroke:#b71c1c
+style Infrastructure1 fill:#c62828,color:#ffffff,stroke:#7f0000
+
+style Apps fill:#c8e6c9,stroke:#2e7d32
+style Bins fill:#c8e6c9,stroke:#2e7d32
+style DockerEngine fill:#81c784,stroke:#1b5e20
+style HostOS2 fill:#4caf50,color:#ffffff,stroke:#1b5e20
+style Infrastructure2 fill:#2e7d32,color:#ffffff,stroke:#1b5e20
+```
 ### Feature Comparison
 
 | Feature | 🖥️ Virtual Machines | 🐳 Docker Containers |
@@ -200,26 +246,46 @@ Disk space: 100-500 MB
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Created: docker create
-    Created --> Running: docker start
-    Running --> Paused: docker pause
-    Paused --> Running: docker unpause
-    Running --> Stopped: docker stop
-    Stopped --> Running: docker start
-    Running --> Killed: docker kill
-    Stopped --> Removed: docker rm
-    Killed --> Removed: docker rm
-    Removed --> [*]
-    
-    note right of Running
-        Container is active
-        Application running
-    end note
-    
-    note right of Stopped
-        Container exists
-        but not running
-    end note
+
+[*] --> Created : docker create
+
+Created --> Running : docker start
+Running --> Paused : docker pause
+Paused --> Running : docker unpause
+
+Running --> Stopped : docker stop
+Stopped --> Running : docker restart
+
+Running --> Killed : docker kill
+
+Stopped --> Removed : docker rm
+Killed --> Removed : docker rm -f
+
+Removed --> [*]
+
+note right of Running
+  ✅ Container is Active
+  🚀 Application Running
+end note
+
+note right of Stopped
+  ⏸️ Container Exists
+  ❌ Application Stopped
+end note
+
+classDef created fill:#bbdefb,color:#0d47a1,stroke:#1565c0,stroke-width:3px
+classDef running fill:#4caf50,color:#ffffff,stroke:#1b5e20,stroke-width:3px
+classDef paused fill:#ffca28,color:#000000,stroke:#f57f17,stroke-width:3px
+classDef stopped fill:#ff7043,color:#ffffff,stroke:#bf360c,stroke-width:3px
+classDef killed fill:#e53935,color:#ffffff,stroke:#b71c1c,stroke-width:3px
+classDef removed fill:#9e9e9e,color:#ffffff,stroke:#424242,stroke-width:3px
+
+class Created created
+class Running running
+class Paused paused
+class Stopped stopped
+class Killed killed
+class Removed removed
 ```
 
 ### 2. Essential Commands
@@ -502,38 +568,62 @@ Need both? → ENTRYPOINT + CMD
 ### Why Volumes?
 
 ```mermaid
-graph LR
-    A[Container Created] --> B[Data Written]
-    B --> C[Container Deleted]
-    C --> D{Data Persists?}
-    D -->|Without Volume| E[❌ Data Lost]
-    D -->|With Volume| F[✅ Data Saved]
-    
-    style E fill:#ffcdd2
-    style F fill:#c8e6c9
-```
+flowchart LR
 
+A["📦 Container Created"] --> B["💾 Data Written"]
+B --> C["🗑️ Container Deleted"]
+C --> D{"🔍 Data Persists?"}
+
+D -->|"❌ Without Volume"| E["🚫 Data Lost"]
+D -->|"✅ With Volume"| F["💾 Data Saved"]
+
+style A fill:#bbdefb,color:#0d47a1,stroke:#1565c0,stroke-width:3px
+style B fill:#90caf9,color:#0d47a1,stroke:#1976d2,stroke-width:3px
+style C fill:#ffe082,color:#e65100,stroke:#ff8f00,stroke-width:3px
+
+style D fill:#ce93d8,color:#4a148c,stroke:#6a1b9a,stroke-width:4px
+
+style E fill:#ef5350,color:#ffffff,stroke:#b71c1c,stroke-width:4px
+style F fill:#4caf50,color:#ffffff,stroke:#1b5e20,stroke-width:4px
+```
 ### Volume Types
 
 ```mermaid
-graph TB
-    subgraph Types["Volume Types"]
-        V[Named Volume<br/>🏷️ Managed by Docker]
-        B[Bind Mount<br/>📂 Direct host path]
-        T[tmpfs<br/>💨 Memory only]
-    end
-    
-    subgraph Location["Storage Location"]
-        V --> VL[/var/lib/docker/volumes/]
-        B --> BL[/any/host/path]
-        T --> TL[RAM Memory]
-    end
-    
-    style V fill:#4caf50,color:#fff
-    style B fill:#ff9800,color:#fff
-    style T fill:#2196f3,color:#fff
-```
+flowchart TB
 
+subgraph Types["📦 Docker Volume Types"]
+direction TB
+
+V["🏷️ Named Volume<br>Managed by Docker"]
+B["📂 Bind Mount<br>Host Machine Path"]
+T["💨 tmpfs Volume<br>Stored in RAM"]
+
+end
+
+subgraph Location["💾 Storage Location"]
+direction TB
+
+VL["📁 /var/lib/docker/volumes/"]
+BL["📁 /any/host/path"]
+TL["⚡ RAM Memory"]
+
+end
+
+V -->|"Persistent Storage"| VL
+B -->|"Direct Mapping"| BL
+T -->|"Temporary Storage"| TL
+
+style Types fill:#f3e5f5,stroke:#7b1fa2,stroke-width:4px,color:#4a148c
+style Location fill:#e8f5e9,stroke:#2e7d32,stroke-width:4px,color:#1b5e20
+
+style V fill:#43a047,color:#ffffff,stroke:#1b5e20,stroke-width:3px
+style B fill:#fb8c00,color:#ffffff,stroke:#e65100,stroke-width:3px
+style T fill:#1e88e5,color:#ffffff,stroke:#0d47a1,stroke-width:3px
+
+style VL fill:#c8e6c9,color:#1b5e20,stroke:#388e3c,stroke-width:2px
+style BL fill:#ffe0b2,color:#e65100,stroke:#ef6c00,stroke-width:2px
+style TL fill:#bbdefb,color:#0d47a1,stroke:#1565c0,stroke-width:2px
+```
 ### Volume Use Cases
 
 <details>
@@ -639,27 +729,65 @@ docker ps -a --filter volume=my-data
 ### Network Types
 
 ```mermaid
-graph TB
-    subgraph Bridge["🌉 Bridge Network<br/>(Default - Same Host)"]
-        C1[Container 1<br/>app] <--> BR[Bridge]
-        C2[Container 2<br/>db] <--> BR
-        BR <--> H1[Host Network]
-    end
-    
-    subgraph Host["🏠 Host Network<br/>(Direct Host Access)"]
-        C3[Container 3] --> HN[Host Network<br/>No isolation]
-    end
-    
-    subgraph Overlay["☁️ Overlay Network<br/>(Multi-Host)"]
-        H2[Host 1] <--> OV[Overlay Network]
-        H3[Host 2] <--> OV
-        OV <--> C4[Container A]
-        OV <--> C5[Container B]
-    end
-    
-    style Bridge fill:#e3f2fd
-    style Host fill:#fff3e0
-    style Overlay fill:#f3e5f5
+flowchart TB
+
+subgraph Bridge["🌉 Bridge Network"]
+direction TB
+
+C1["📦 Container App"]
+C2["🗄️ Container DB"]
+BR["🌐 Bridge Network"]
+H1["🖥️ Host Network"]
+
+C1 <--> BR
+C2 <--> BR
+BR <--> H1
+
+end
+
+subgraph Host["🏠 Host Network Mode"]
+direction TB
+
+C3["📦 Container"]
+HN["⚡ Direct Host Access<br>No Isolation"]
+
+C3 --> HN
+
+end
+
+subgraph Overlay["☁️ Overlay Network"]
+direction TB
+
+H2["🖥️ Host 1"]
+H3["🖥️ Host 2"]
+OV["🌐 Overlay Network"]
+C4["📦 Container A"]
+C5["📦 Container B"]
+
+H2 <--> OV
+H3 <--> OV
+OV <--> C4
+OV <--> C5
+
+end
+
+style Bridge fill:#e3f2fd,stroke:#1565c0,stroke-width:4px,color:#0d47a1
+style Host fill:#fff3e0,stroke:#ef6c00,stroke-width:4px,color:#e65100
+style Overlay fill:#f3e5f5,stroke:#7b1fa2,stroke-width:4px,color:#4a148c
+
+style C1 fill:#64b5f6,color:#ffffff,stroke:#1565c0,stroke-width:2px
+style C2 fill:#42a5f5,color:#ffffff,stroke:#0d47a1,stroke-width:2px
+style BR fill:#1e88e5,color:#ffffff,stroke:#0d47a1,stroke-width:3px
+style H1 fill:#90caf9,color:#0d47a1,stroke:#1565c0,stroke-width:2px
+
+style C3 fill:#ffb74d,color:#ffffff,stroke:#ef6c00,stroke-width:2px
+style HN fill:#fb8c00,color:#ffffff,stroke:#e65100,stroke-width:3px
+
+style H2 fill:#ba68c8,color:#ffffff,stroke:#6a1b9a,stroke-width:2px
+style H3 fill:#ab47bc,color:#ffffff,stroke:#4a148c,stroke-width:2px
+style OV fill:#8e24aa,color:#ffffff,stroke:#4a148c,stroke-width:3px
+style C4 fill:#ce93d8,color:#4a148c,stroke:#7b1fa2,stroke-width:2px
+style C5 fill:#d1c4e9,color:#4a148c,stroke:#7b1fa2,stroke-width:2px
 ```
 
 ### Network Comparison
@@ -755,18 +883,38 @@ docker service create \
 ### Why Multi-Stage?
 
 ```mermaid
-graph LR
-    subgraph Single["❌ Single-Stage Build"]
-        S1[Source Code<br/>+ Build Tools<br/>+ Dependencies<br/>+ Compiled App]
-        S1 --> S2[Final Image<br/>700 MB 🐘]
-    end
-    
-    subgraph Multi["✅ Multi-Stage Build"]
-        M1[Stage 1: Build<br/>Source + Tools<br/>600 MB] --> M2[Stage 2: Run<br/>Only App<br/>50 MB 🪶]
-    end
-    
-    style Single fill:#ffcdd2
-    style Multi fill:#c8e6c9
+flowchart TB
+
+subgraph Single["❌ Single-Stage Docker Build"]
+direction TB
+
+S1["📦 Source Code<br>🔧 Build Tools<br>📚 Dependencies<br>⚙️ Compiled App"]
+
+S2["🐘 Final Image<br>700 MB"]
+
+S1 --> S2
+
+end
+
+subgraph Multi["✅ Multi-Stage Docker Build"]
+direction TB
+
+M1["🏗️ Stage 1: Build<br>📦 Source Code<br>🔧 Build Tools<br>600 MB"]
+
+M2["🚀 Stage 2: Runtime<br>📦 Only Application<br>🪶 50 MB"]
+
+M1 --> M2
+
+end
+
+style Single fill:#ffebee,stroke:#d32f2f,stroke-width:4px,color:#b71c1c
+style Multi fill:#e8f5e9,stroke:#388e3c,stroke-width:4px,color:#1b5e20
+
+style S1 fill:#ef9a9a,color:#000000,stroke:#c62828,stroke-width:3px
+style S2 fill:#e53935,color:#ffffff,stroke:#b71c1c,stroke-width:3px
+
+style M1 fill:#81c784,color:#000000,stroke:#2e7d32,stroke-width:3px
+style M2 fill:#43a047,color:#ffffff,stroke:#1b5e20,stroke-width:3px
 ```
 
 ### Real-World Example: Go Application
