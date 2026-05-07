@@ -23,13 +23,16 @@ Docker Architecture:
 | Performance  | High                | Medium           |
 
 🔥 Real-Time DevOps Use Case
+
 Scenario:
 You built a Java app → want consistent deployment
 ✔ Without Docker:
 Works on dev, fails on prod ❌
 ✔ With Docker:
 Same container everywhere ✅
+
 🧩 Summary (Interview Ready)
+
 Docker uses client-server architecture
 Main components:
 Client → sends command
@@ -67,7 +70,8 @@ dockerfile to to do image automation .
 
 🔥 copying the file from Ec2 to container in specific location 
 
-1- 🔥 Method 1: Using docker cp (Most Common)
+1-  Method 1: Using docker cp (Most Common)
+
 📌 Syntax
 docker cp <source_path_on_ec2> <container_id>:<destination_path_in_container>
 
@@ -81,21 +85,24 @@ docker cp /home/ec2-user/test.txt a1b2c3d4e5f6:/tmp/
 docker cp my-container:/app/data/test.txt /home/ec2-user/
 
 
--------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------
 Understanding Dockerfile
--------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------
 A dockerfile is a blueprint which is used to build docker images automatically.
 whatever you write inside a Dockerfile become a part of the image that we are going to created. 
 A dockerfile contains instructions + arguments that: choose the base OS / environment , install dependencies, copy application code form one location to any location, configure the environment variables, expose ports, run startup commands,
 
 Process: Dockerfile-----> Docker Image-------> Docker container (App)
 In dockerfile we will use DSL(Domain Specific Language) Keywords.
---------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
 🔥 FROM - The FROM instruction is the foundation layer of any Docker image. It tells Docker:
 “Which base image should I start building my container from?”
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
 🧱 Basic Syntax
 FROM <image_name>:<tag>
+
 ✅ Example
 FROM ubuntu:22.04
 
@@ -104,16 +111,19 @@ FROM ubuntu:22.04
 FROM ubuntu:22.04
 FROM centos:7
 FROM debian:bullseye
+
 ☕ Language Runtime
 FROM openjdk:17
 FROM python:3.11
 FROM node:18
+
 ⚡ Minimal Images (Production)
 FROM alpine:3.19
 ✔ Very small size (~5MB) → faster builds & deploys
 
 🚀 Multi-Stage Build (Advanced DevOps Use Case)
 You can use multiple FROM statements:
+
 # Stage 1: Build
 FROM maven:3.9 AS builder
 WORKDIR /app
@@ -137,10 +147,13 @@ It creates a new image layer after executing the command.
 🧱 Basic Syntax
 RUN <command>
 ✅ Example
+
 FROM ubuntu:22.04
 RUN apt-get update
 RUN apt-get install -y nginx
+
 ✔ Each RUN creates a separate layer
+
 ⚙️ What Happens Internally?
 When Docker hits a RUN instruction:
 Creates a temporary container from current image
@@ -156,12 +169,16 @@ Number of layers
 Build time
 
 🧪 Real Examples
+
 📦 Install Packages
 RUN apt-get update && apt-get install -y curl vim git
+
 📁 Create Directories
 RUN mkdir -p /app/logs
+
 🔧 Build Application
 RUN mvn clean package
+
 🧹 Clean Cache (VERY IMPORTANT)
 RUN apt-get update && \
     apt-get install -y nginx && \
@@ -170,14 +187,17 @@ RUN apt-get update && \
 ✔ Prevents unnecessary image bloat
 
 🚀 Shell vs Exec Form
+
 1. Shell Form (Default)
 RUN apt-get update && apt-get install -y nginx
 ✔ Runs via:
 /bin/sh -c
+
 2. Exec Form
 RUN ["apt-get", "update"]
 ✔ No shell involved
 ✔ More secure & predictable
+
 🔥 Advanced: Multi-Line RUN
 RUN apt-get update && \
     apt-get install -y nginx curl && \
@@ -187,6 +207,7 @@ RUN apt-get update && \
 
 
 ⚡ Optimization Tips (Interview Level)
+
 Minimize number of RUN layers
 Use multi-stage builds
 Use .dockerignore
@@ -233,8 +254,10 @@ The CMD instruction defines the default command that runs when a container start
 Think of it as: “What should this container do when it is launched?”
 
 🧱 Basic Syntax
+
 1. Exec Form (Recommended ✅)
 CMD ["executable", "arg1", "arg2"]
+
 2. Shell Form
 CMD command arg1 arg2
 ✅ Example
@@ -248,6 +271,7 @@ Executes it as PID 1 process
 If user provides a command → CMD gets overridden
 
 🔥 Real Examples
+
 🌐 Run Web Server
 FROM nginx:latest
 CMD ["nginx", "-g", "daemon off;"]
@@ -277,28 +301,37 @@ It works only at build time, not at runtime.
 🧱 Basic Syntax
 COPY <source> <destination>
 ✅ Example
+
 FROM ubuntu:22.04
 COPY test.txt /app/
 ✔ Copies test.txt → /app/test.txt inside image
+
 📂 What is “Source”?
 Source must be inside the build context
 Build context = directory where you run:
 docker build -t my-image .
+
 🔍 Examples
+
 📄 Copy Single File
 COPY app.jar /opt/app/
+
 📁 Copy Directory
 COPY myfolder /app/
+
 ✔ Copies entire folder recursively
 📍 Copy with Rename
 COPY app.jar /opt/app/myapp.jar
+
 📦 Copy Multiple Files
 COPY file1.txt file2.txt /app/
+
 ⚙️ What Happens Internally?
 When Docker executes COPY:
 Takes files from local system
 Transfers them into image filesystem
 Creates a new image layer
+
 🚀 Real DevOps Example
 FROM openjdk:17
 WORKDIR /app
@@ -306,10 +339,12 @@ WORKDIR /app
 COPY target/app.jar app.jar
 
 CMD ["java", "-jar", "app.jar"]
+
 ✔ Workflow:
 CI builds .jar
 COPY moves it into image
 Container runs app
+
 🔥 COPY vs ADD (Important Interview Question)
 | Feature             | COPY | ADD              |
 | ------------------- | ---- | ---------------- |
@@ -370,6 +405,7 @@ ADD introduces hidden behavior (auto-extract, URL fetch)
 This reduces transparency → harder debugging
 That’s why most teams enforce:
 ✅ “Always use COPY unless ADD is strictly required”
+
 🧩 Summary
 ADD = powerful but less predictable
 COPY = simple, safe, preferred
@@ -382,8 +418,10 @@ Using this keyword we can set the working directory for the image or container.
 It is used to go inside a desired directory.
 whatever instruction that we write after WORKDIR all those instructions will be processed in the given working directory only.
 The WORKDIR instruction sets the working directory inside the container for all subsequent instructions like RUN, CMD, COPY, ADD, and ENTRYPOINT.
+
 🔹 Syntax
 WORKDIR /path/to/directory
+
 🔹 What It Does
 Sets the current directory context inside the container
 If the directory does not exist → Docker creates it automatically
@@ -399,6 +437,7 @@ COPY . .
 RUN ls
 
 CMD ["bash"]
+
 👉 What happens here:
 WORKDIR /app
 Creates /app if not exists
@@ -435,6 +474,7 @@ LABEL \
   app="myapp" \
   version="1.0" \
   maintainer="akshay"
+
 🔹 What LABEL Does
 Attaches metadata to the image
 Does NOT affect container runtime behavior
@@ -490,9 +530,12 @@ LABEL author="akshay"
 
 # ✅ Good (single layer)
 LABEL version="1.0" author="akshay"
+
+
 --------------------------------------------------------------------------------------------------------------------------
 🧠 EXPOSE in Dockerfile
 --------------------------------------------------------------------------------------------------------------------------
+
 It represent on which port number our container should run.
 The EXPOSE instruction is used to document which ports a container listens on at runtime.
 It does NOT actually publish or open the port — it simply provides metadata for users and tools.
@@ -550,6 +593,7 @@ Use -p or orchestration (like Kubernetes) for real exposure
 🧠 VOLUME in Dockerfile
 -------------------------------------------------------------------------------------------------------------------------
 The VOLUME instruction is used to create a mount point inside the container and mark it as a location for persistent or external storage.
+
 👉 It tells Docker:
 “Store this directory’s data outside the container filesystem”
 
@@ -559,12 +603,14 @@ or
 VOLUME /path/in/container
 or multiple volumes:
 VOLUME ["/data", "/logs"]
+
 🔹 What VOLUME Does
 Creates a persistent storage location
 Data is stored outside the container layer
 Data survives:
 container restart ✅
 container deletion (if volume is reused) ✅
+
 🔹 Example Dockerfile
 FROM mysql:latest
 
@@ -638,6 +684,7 @@ That’s why:
 --------------------------------------------------------------------------------------------------------------------------
 🧠 MAINTAINER in Dockerfile
 --------------------------------------------------------------------------------------------------------------------------
+
 The MAINTAINER instruction was used to specify the author/owner of a Docker image.
 🔴 Current Status (Very Important)
 👉 MAINTAINER is DEPRECATED (no longer recommended)
@@ -677,6 +724,7 @@ CMD ["whoami"]
 
 👉 Output when container runs:
 appuser
+
 🔹 Example 2: Using UID and GID
 FROM alpine
 
@@ -782,11 +830,15 @@ CMD → default arguments
 ENV is used to set environment variables inside a container, which are available:
 During build time (for subsequent instructions like RUN)
 During runtime (inside the running container)
+
 🔹 Syntax
+
 1. Key-Value Format (Recommended ✅)
 ENV KEY=value
+
 2. Multiple Variables
 ENV KEY1=value1 KEY2=value2
+
 🔹 Basic Example
 FROM ubuntu
 
@@ -825,6 +877,7 @@ ENV PORT=3000
 RUN npm install
 
 CMD ["node", "app.js"]
+
 👉 Inside container:
 echo $NODE_ENV   → production
 echo $PORT       → 3000
@@ -1009,14 +1062,23 @@ Volumes store data outside container filesystem
 1-create a dockerfile vim docker and write a instruction
 FROM ubuntu
 VOLUME ["volume1"]
+
 2- docker build -t volume:v1 .
+
 3- docker images
+
 4- docker run -it --name cont-1 volume:v1 /bin/bash
+
 5- now go inside the container in folder /volume1 and create a sample 10 file.txt
+
 6- All data that is stored in volume1 is stored on Host machine (EC2 instance ) that means if container delete or restart your data remain safe / persistent you can retrive data form Host .
+
 7- Docker has its own HOME DIRECTORY ---->var/lib/docker
+
 8-Now exit from the container with -->Ctl + P + Q
+
 9- Now go the docker home directory /var/lib/docker. You will get directory volumes and inside data is available . There is an Volume ID go inside  --->cd _data ---> All files are available check and confirm.
+
 =========================================================================================================================
 root@ip-172-31-30-168:/# cd /var/lib/docker/
 
@@ -1040,6 +1102,7 @@ file1.txt   file2.txt  file4.txt  file6.txt  file8.txt
 file10.txt  file3.txt  file5.txt  file7.txt  file9.txt
 =========================================================================================================================
 10- So whatever data u have created inside container is available on EC2 instance that is what docker Do.
+
 11-Now create a additional file form host machne inside the _data folder on Ec2 instance .
 
 1a6d78a3/_data# touch hello{1..5}.java
@@ -1081,37 +1144,63 @@ file10.txt  file3.txt  file5.txt  file7.txt  file9.txt  hello2.java  hello4.java
 ==========================================================================================================================================
 🐳Method-2 : Create a volume using Command 🐳
 ==========================================================================================================================================
+
 1- Now create a new cont-4 with new volume  ----> docker run -it --name cont-4 -v /volume2 ubuntu
+
 2-  Now create cont-5 using the volume which there in contaner-4 ----> docker run -it --name cont-5 --volumes-from cont-4 ubuntu
+
 3- you wil get the  same data in cont-5  which  is available in cont-4. cd /volume2 
-4- Now if we deleted cont-4  and cont-5 the volume2 is available on host it will not get deleted --->  docker volume ls , check the volume is available.
+
+4- Now if we deleted cont-4  and cont-5 the volume2 is available on host it will not get deleted --->  docker volume ls , check the 
+volume is available.
+
 5- Now go cd /var/lib/docker/volumes/4eee37713e82cf88e896e2eb75383f5d47932caa1d7d1b9316567af81a6d78a3 ----> ls _data , data is persisted.
+
 6-  NOTE-  Data is persisted on EC2 instance but What if some one deleted instance or instance  crash ? What happen to this volume ?--> Everythings get deleted. so it is not recommended in realtime usecase, In realtime we use EBS volume to attach container.
 
 ===================================================================================================================================================
 🐳 Method-3 : Attaching EBS volume to Container 🐳
 ===================================================================================================================================================
+
 1- Now we will attach EBS volume to container , even if some one deleted EC2 instancemy data is safe and secure in EBS volume , 
+
 2- You can change the EBS volume setting --->Delete on Termination - NO , By Default it is YES, we need to modify or need to attach new EBS volume to EC2.
+
 3- Now are will create a New EBS volume and for that EBS volume i will  attach the container. 
+
 4- Create new EBS Volume----> Attach to EC2 Instance -----> Containers are available -----> Attach EBS volume to the container.
 NOTE: We need to create EBS volume in the same AZ as of EC2 instance.
+
 5- Now create a volume ----> attach the volume to Ec2 instance ---> select device name /dev/sdb--> Attach volume ---->It should be show status --> In use
+
 6- Now whatever data we write can store in /dev/sdb volume.
+
 7- Now let us attach this volume to container for this we need to work with mounting a filesystem.
+
 8- lsblk -----> First time when you create volume it is recommended to format a volume-----> sudo mkfs.ext4 /dev/xvdb 
+
 9- Now  to mount a EBS volume permenently we nedd to create a folder(Dir) ----> sudo  mkdir -p /mnt/ebs----> df -h /mnt/ebs 
+
 10- We need to give permission to user to write data in /mnt/ebs ----> sudo chown -R ec2-user:ec2-user /mnt/ebs   
+
 11- Set permissions so Docker can read/write  ---> chmod -R 755 /mnt/ebs .
+
 12- To make data persisted we need to add Block UUID ---->sudo blkid /dev/ebs ---->copy UUID ----->run the command ---->sudo bash -c 'echo "UUID=1234-ABCD /mnt/ebs ext4 defaults,nofail 0 2" >> /etc/fstab'------->“This command appends a persistent mount entry into /etc/fstab using the volume UUID, ensuring the EBS volume is automatically mounted on reboot. nofail prevents boot failure if the volume is unavailable, and sudo bash -c ensures proper permission for file modification.”
+
 13- After adding the configuration in /etc/fstab it is recommanded to unmount and mount the Directory ----> sudo unmount /mnt/ebs ----> sudo mount -a 
+
 14- Check ----> df -h /mnt/ebs 
+
 15- All these are mandatory steps to create a  EBS volume data persistent .
 
 16- Create new application and add data in /mnt/ebs and check the data is persisted ro not?
+
 17-  mkdir ebs-flask ----->vim app.py (copy the code from kastro kiran notes Docker_Day 05 and paste in app.py file) 
+
 18- Install dependencies ----> vim requirements.txt (copy the code from kastro kiran notes Docker_Day 05 and paste in requirement.txt file)
+
 19- Now write a dockerfile for python application.
+
 FROM python:3.11
 WORKDIR /app
 COPY requirements.txt .
@@ -1121,12 +1210,19 @@ EXPOSE 5000
 CMD ["python","app.py"]
 
 20- Now build the Docker image -----> docker build -t ebs-flask:v1 .
+
 21- Now run the container with the Image and mount the volume path to persiste data -----> docker run -it --name ebs-cont-1 -p 5001:5000 -v /mnt/ebs:/data ubuntu 
+
 22- Now the open the Host port number in the security group of EC2 instance and copy public IP and paste in the browser-----> IP:<Hostport> 
+
 23- Open the application and add some data . Now check that data is stored in /mnt/ebs ---->ls -l /mnt/ebs ---->To check the data---->sudo apt install sqlite -y------> sqlite3 /mnt/ebs/app.db "SELECT * FROM entries;"
+
 24- Now stop container and check the data persisted.
+
 25- Now again create a new conatiner  ---> docker run -it --name ebs-cont-1 -p 5001:5000 -v /mnt/ebs:/data ubuntu -->Now old data will get back to the conatiner.
+
 26- Chek the data --->sqlite3 /mnt/ebs/app.db "SELECT * FROM entries;"
+
 27- To check the which volume is attach to which container -----> docker inspect <containerID> | grep -i volume 
  
                                                        ✅ DONE ----> Data is persisted . ✅ 
@@ -1134,6 +1230,7 @@ CMD ["python","app.py"]
 ==========================================================================================================================
 🐳 Docker Images — Deep Dive (DevOps-Oriented)  0️⃣  1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟 
 ==========================================================================================================================
+
 🔹 What is a Docker Image?
 A Docker Image is an immutable, read-only template used to create containers. It includes:
 Application code
@@ -1170,9 +1267,13 @@ A base image is the foundation layer of a Docker container image. It's an image 
 🐳 Types of Base Images in Docker
 ---------------------------------------------
 when you build a docker image, the base image decide 4 important factors,
+
 1- How Big the image will be?
+
 2- What tools and packages are inside?
+
 3- How Secure it is ?
+
 4- And how fast it runs?
 
 A base image is the starting layer (FROM) of your Docker image. It defines:
@@ -1234,18 +1335,23 @@ Images maintained by language community(python,java,Golang,Node).
 ex: FROM python:3.9 (900MB)
     FROM python:3.9-slim (150MB)
     FROM python:3.9-alpine (50MB)
+
 🔹 Key Characteristics
+
 ✅ 1. Verified & Secure
 Minimal vulnerabilities (frequent CVE patches)
 Official maintainers handle updates
+
 ✅ 2. Standardized Structure
 Consistent environment variables
 Predictable behavior across environments
+
 ✅ 3. Multiple Variants Available
 Example (node image):
 node:18
 node:18-alpine
 node:18-slim
+
 | Variant | Use Case               |
 | ------- | ---------------------- |
 | Full    | Dev / testing          |
@@ -1253,6 +1359,7 @@ node:18-slim
 | Slim    | Balanced               |
 
 🔹 Real DevOps Use Cases
+
 🔸 Use Case 1: Microservices Architecture
 API service → node image
 Database → postgres image
@@ -1270,7 +1377,9 @@ Custom builds
 Multi-stage
 Security hardening
 --------------------------------------------------------------------------------------------------------------------------
+
 4️⃣ Application-Specific Docker Images
+
 🔹 What are Application-Specific Images?
 Application-specific images are custom-built Docker images that package:
 Your application code
@@ -1279,7 +1388,9 @@ Dependencies & libraries
 Configuration
 👉 In short:
 “Your complete application bundled into a portable, runnable unit.”
+
 🔹 How They Differ from Official Images
+
 | Aspect        | Official Image   | Application-Specific Image      |
 | ------------- | ---------------- | ------------------------------- |
 | Purpose       | Generic service  | Your app                        |
